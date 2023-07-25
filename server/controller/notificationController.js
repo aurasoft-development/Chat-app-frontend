@@ -30,7 +30,7 @@ const sendNotification = catchAsyncError(async (req, res, next) => {
 
 
 const allNotification = catchAsyncError(async (req, res, next) => {
-    const message = await Notification.find({receiver_id: req.user._id, status: true })
+    const message = await Notification.find({ receiver_id: req.user._id, status: true })
     res.status(200).json({
         success: true,
         data: message
@@ -39,27 +39,30 @@ const allNotification = catchAsyncError(async (req, res, next) => {
 
 const getNotificationById = catchAsyncError(async (req, res, next) => {
     const id = req.params._id;
-    const message = await Notification.findById(id)
-    res.json(message)
+    const message = await Notification.findById({ _id: id })
+    res.status(200).json({
+        success: true,
+        data: message
+    })
 })
 
 const deleteNotification = catchAsyncError(async (req, res, next) => {
-    const { _id} = req.user;
-    const {  receiver_id } = req.body;
+    const { _id } = req.params;
     const info = {
-        status: true
+        status: false
     }
-    const data = await Notification.findOne({ sender_id: _id, receiver_id: receiver_id, status: true})
-    if (data) {
-        await Notification.findByIdAndUpdate({ _id: data._id },info)
-        // { $push: { "messageData": messageData } })
+    const notification = await Notification.findById(_id)
+     if(notification && !null){
+        await Notification.findByIdAndUpdate({_id}, info)
         res.status(200).json({
             success: true,
-            message: "update success",
+            message: "delete success",
         })
-    } else {
-        return next(new ErrorHandler(`user not found`, 404))
-    }
+     }
+     else{
+        return next(new ErrorHandler('notifacation not found ',404))
+     }
+       
 })
 
 module.exports = { sendNotification, allNotification, deleteNotification, getNotificationById }

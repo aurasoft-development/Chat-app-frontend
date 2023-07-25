@@ -1,3 +1,5 @@
+import { Toast } from "@chakra-ui/react";
+import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,9 +9,9 @@ const ChatProvider = ({ children }) => {
     const [selectedChat, setSelectedChat] = useState();
     const [chats, setChats] = useState();
     const [notification, setNotification] = useState([]);
-
     const [fetchAgain, setFetchAgain] = useState(false)
     const navigate = useNavigate();
+
     useEffect(() => {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'))
         setUser(userInfo)

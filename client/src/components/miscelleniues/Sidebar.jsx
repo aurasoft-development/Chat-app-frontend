@@ -1,5 +1,5 @@
-import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
-import React, { useState } from 'react'
+import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Toast, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react'
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons"
 import { ChatState } from '../Context/ChatProvider';
 import ProfileModel from './ProfileModel';
@@ -13,16 +13,61 @@ const Sidebar = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false)
   const [loadingChat, setLoadingChat] = useState();
+  const [noti, setNoti] = useState([])
   const { user, setSelectedChat, chats, setChats, notification, setNotification, } = ChatState();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // useEffect(() => {
-  //   const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-  //   setUser(userInfo)
-
-  // }, [])
-
+  const fetchNotifacation = async () => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const { data } = await axios.get(
+        `/api/notification/get_notification`,
+        config
+      );
+      setNoti(data);
+    } catch (error) {
+      Toast({
+        title: "Error Occured!",
+        description: "Failed to Load the Messages",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+    }
+  };
+  useEffect(() => {
+    fetchNotifacation();
+  }, [])
+  const deleteNotifacation = async (_id) => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      await axios.delete(
+        `/api/notification/delete_notification/${_id}`,
+        config
+      );
+    } catch (error) {
+      Toast({
+        title: "Error Occured!",
+        description: "Failed to Load the Messages",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+    }
+  }
   const logoutHandler = () => {
     localStorage.removeItem("userInfo")
     navigate('/', { replace: true })
@@ -105,22 +150,26 @@ const Sidebar = () => {
         <div >
           <Menu>
             <MenuButton p={1} className='bellIconBox' >
-               {/* show notification counter */}
-               {/* <h5 className='IconInner'>{notification.length > 0 ? (<span>{notification.length}</span>) : 0}</h5> */}
+              <h5 className='IconInner'>
+                {noti && noti.data && noti.data.length > 0 ? <span>{noti.data.length}</span> : 0}
+                </h5>
               <BellIcon className='bell' fontSize={"20px"} m={1} />
             </MenuButton>
 
             <MenuList >
-              {!notification.length > 0 && "No New Messages"}
-              {notification.map((noti) => (
+              {/* {!noti && !noti.data.length > 0 && "No New Messages"} */}
+
+              {noti && noti.data && noti.data.length > 0 && noti.data.map((noti) => (
                 <MenuItem
                   key={noti._id}
                   onClick={() => {
                     setSelectedChat(noti.chat);
-                    setNotification(notification.filter((n) => n !== noti));
+                    deleteNotifacation(noti._id)
                   }}
-                > 
-                 {/* show notification details functionality */}
+                >
+                   {/* show notification details functionality */}
+                   
+                  {noti.length > 0 ? <span> {"No Notifacation Message"}</span> : <span> {noti.names} :  {noti.messageData} </span> } 
                 </MenuItem>
               ))}
             </MenuList>
