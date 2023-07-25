@@ -123,8 +123,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
         if (!notification.includes(newMessageReceived)) {
           postNotification(newMessageReceived)
-
-          // setNotification([newMessageReceived, ...notification]);
           setFetchAgain(!fetchAgain);
         }
       } else {
@@ -219,7 +217,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               <div style={{
                 color: "green",
                 cursor: "pointer",
-                background:"#EDF2F7",
+                background: "#EDF2F7",
                 width: "40px",
                 paddingTop: "8px",
                 borderRadius: "6px",
