@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 const notificationModel = mongoose.Schema(
     {
+        chat: { type: mongoose.Schema.Types.ObjectId, ref: "Chat" },
         sender_id: { type: String },
         receiver_id: { type: String },
         names: { type: String },

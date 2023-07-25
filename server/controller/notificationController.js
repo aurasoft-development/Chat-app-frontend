@@ -3,10 +3,12 @@ const ErrorHandler = require("../utils/errorhandler");
 const Notification = require("../model/notificationModel");
 
 const sendNotification = catchAsyncError(async (req, res, next) => {
+    console.log("req----->",req.body)
     const { _id, name } = req.user;
-    const { messageData, receiver_id } = req.body;
+    const { messageData, receiver_id ,chat} = req.body;
 
     const newMessage = {
+        chat: chat,
         sender_id: _id,
         receiver_id: receiver_id,
         names: name,
@@ -31,6 +33,7 @@ const sendNotification = catchAsyncError(async (req, res, next) => {
 
 const allNotification = catchAsyncError(async (req, res, next) => {
     const message = await Notification.find({ receiver_id: req.user._id, status: true })
+    .populate("chat");
     res.status(200).json({
         success: true,
         data: message

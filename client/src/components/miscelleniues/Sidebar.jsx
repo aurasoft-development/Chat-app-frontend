@@ -13,8 +13,8 @@ const Sidebar = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false)
   const [loadingChat, setLoadingChat] = useState();
-  const [noti, setNoti] = useState([])
-  const { user, setSelectedChat, chats, setChats, notification, setNotification, } = ChatState();
+  const [data ,setData] = useState("")
+  const { user, setSelectedChat, chats, setChats,notification,noti, setNoti } = ChatState();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -44,7 +44,7 @@ const Sidebar = () => {
   };
   useEffect(() => {
     fetchNotifacation();
-  }, [])
+  }, [data,notification])
   const deleteNotifacation = async (_id) => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     try {
@@ -53,10 +53,11 @@ const Sidebar = () => {
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      await axios.delete(
+     const data =  await axios.delete(
         `/api/notification/delete_notification/${_id}`,
         config
       );
+      setData(data)
     } catch (error) {
       Toast({
         title: "Error Occured!",
@@ -158,10 +159,10 @@ const Sidebar = () => {
 
             <MenuList >
               {/* {!noti && !noti.data.length > 0 && "No New Messages"} */}
-
+              
               {noti && noti.data && noti.data.length > 0 && noti.data.map((noti) => (
                 <MenuItem
-                  key={noti._id}
+                  key={noti.chat._id}
                   onClick={() => {
                     setSelectedChat(noti.chat);
                     deleteNotifacation(noti._id)

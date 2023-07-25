@@ -12,11 +12,12 @@ import GroupChatModel from './GroupChatModel';
 const MyChat = () => {
   const [loggedUser, setLoggedUser] = useState();
   const [newMessage, setNewMessage] = useState("");
-  const { notification, selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
+  const { notification, selectedChat, setSelectedChat, user, chats, setChats, noti, setNoti } = ChatState();
   const toast = useToast();
   // const [count,setCount]= useState('')
   // console.log("notification_1--->", notification[0])
 
+  //  console.log("noti---->",noti.data[0].chat._id)
   const fetchChats = async () => {
     try {
       const config = {
@@ -43,42 +44,6 @@ const MyChat = () => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
   }, [])
-
-//   const postNotification = async () => {
-
-//     try {
-//       const config = {
-//         headers: {
-//           "Content-type": "application/json",
-//           Authorization: `Bearer ${user.token}`,
-//         },
-//       };
-//         await axios.post(
-//         "/api/notification/send_notification",
-//         {
-//           sender_id: user._id,
-//           receiver_id: notification[0].chat.users[0],
-//           names: user.name,
-//           messageData: notification[0].content
-//         },
-//         config
-//       );
-//     } catch (error) {
-//       toast({
-//         title: "Error Occured!",
-//         description: "Failed to send the Message",
-//         status: "error",
-//         duration: 5000,
-//         isClosable: true,
-//         position: "bottom",
-//       });
-//     }
-//   }
-// useEffect(()=>{
-//   postNotification()
-// },[notification])
-
-
   return (
     loggedUser
       ?
@@ -128,7 +93,7 @@ const MyChat = () => {
             <Stack overflowY='scroll'>
               {
                 chats.length > 0 && chats.map((chat) => {
-                  
+
                   return <Box
                     onClick={() => {
                       setSelectedChat(chat);
@@ -146,13 +111,18 @@ const MyChat = () => {
                     key={chat._id}
                   >
                     <Text fontSize="15px" fontFamily="Poppins,sans-serif" fontWeight={"600"}>
-                      {!chat.isGroupChat
-                        ? getSender(loggedUser, chat.users)
-                        : chat.chatName}
+                      <div style={{display:"flex" , justifyContent:"space-between" }}>
+                        <div>  {!chat.isGroupChat
+                          ? getSender(loggedUser, chat.users)
+                          : chat.chatName}</div>
 
-                      {/* {notification.length} */}
-
-
+                        {
+                        //   noti.data.forEach((value)=>{
+                        //  <div>  {chat._id == value.chat._id} ? <div>{value && value.data && value.data.length > 0 ? value.data.length : ""}</div> :{"0"} </div>
+                        //  })
+                        <div>{noti.data.length > 0 ? noti.data.length : ""}</div> 
+                        }
+                      </div>
                     </Text>
                     {chat.latestMessage && (
                       <Text fontSize="12px" fontFamily="Poppins,sans-serif" fontWeight={"600"}>
@@ -171,6 +141,7 @@ const MyChat = () => {
                              </div>
                           )
                           })} */}
+
                       </Text>
 
                     )}

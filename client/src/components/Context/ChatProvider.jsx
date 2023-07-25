@@ -1,5 +1,3 @@
-import { Toast } from "@chakra-ui/react";
-import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,6 +6,7 @@ const ChatProvider = ({ children }) => {
     const [user, setUser] = useState();
     const [selectedChat, setSelectedChat] = useState();
     const [chats, setChats] = useState();
+    const [noti, setNoti] = useState([])
     const [notification, setNotification] = useState([]);
     const [fetchAgain, setFetchAgain] = useState(false)
     const navigate = useNavigate();
@@ -21,7 +20,7 @@ const ChatProvider = ({ children }) => {
         }
     }, [navigate])
     return (
-        <ChatContext.Provider value={{ user, setUser, selectedChat, setSelectedChat, chats, setChats, notification, setNotification, fetchAgain, setFetchAgain  }}>
+        <ChatContext.Provider value={{ user, setUser, selectedChat, setSelectedChat, chats, setChats, notification, setNotification, fetchAgain, setFetchAgain, noti, setNoti }}>
             {children}
         </ChatContext.Provider>
     )

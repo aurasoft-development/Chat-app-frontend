@@ -21,7 +21,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const toast = useToast();
-  const { user, selectedChat, setSelectedChat, notification, setNotification } = ChatState();
+  const { user, selectedChat, setSelectedChat, setNotification} = ChatState();
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -73,6 +73,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
 
   const postNotification = async (newMessageReceived) => {
+    console.log("newMessage ----->",newMessageReceived)
+    // newMessageReceived.chat.users.map((e)=>console.log("e--->",e))
 
     try {
       const config = {
@@ -83,11 +85,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         },
 
       };
-      console.log('first 1', config)
       const data = await axios.post(
         "/api/notification/send_notification",
         {
-
+          chat: newMessageReceived.chat._id,
           sender_id: newMessageReceived.sender._id,
           receiver_id: newMessageReceived.chat.users[0],
           names: user.name,
@@ -95,7 +96,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         },
         config
       );
-      console.log('first 2', data)
+      setNotification(data);
     } catch (error) {
       toast({
         title: "Error Occuredd!",
@@ -107,21 +108,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       });
     }
   }
-
-  // useEffect(() => {
-  //   socket.on("message received", (newMessageReceived) => {
-  //     if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
-  //       if (!notification.includes(newMessageReceived)) {
-  //         postNotification()
-  //       }
-  //     } 
-  //   });
-  // },[]);
-
   useEffect(() => {
     socket.on("message received", (newMessageReceived) => {
       if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
-        if (!notification.includes(newMessageReceived)) {
+        if (newMessageReceived) {
           postNotification(newMessageReceived)
           setFetchAgain(!fetchAgain);
         }
