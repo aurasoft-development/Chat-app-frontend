@@ -1,13 +1,13 @@
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text, Toast, useDisclosure } from "@chakra-ui/react"
+import { Avatar, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text, Toast, Wrap, WrapItem, border, color, useDisclosure } from "@chakra-ui/react"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import GetAllUserTable from "./GetAllUserTable"
+
 
 export default function GetUserModel() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [getUser, seGetUser] = useState("")
 
-  console.log("getuser---->", getUser)
   const allUser = async () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     try {
@@ -34,6 +34,7 @@ export default function GetUserModel() {
   useEffect(() => {
     allUser()
   }, [])
+
   return (
     <>
       <h3 onClick={onOpen}> All User List</h3>
@@ -43,13 +44,21 @@ export default function GetUserModel() {
         <ModalContent>
           <ModalHeader>Show All User List</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            {/* {getUser && getUser.data.map((value) => {
+          <ModalBody style={{ display: "flex", flexDirection: "column", gap: "10px" ,cursor:"pointer" }}>
+            {getUser && getUser.data.map((value) => {
+              return (
 
-              <Text>name : {value.name}</Text>
-            })} */}
+                <div style={{ display: "flex", border: '1px solid green', gap: "10px", borderRadius: "5px", fontWeight: "bold" }}  >
+                  <div>
+                    <Avatar size={'sm'} cursor={'pointer'} src={value.pic} />
+                  </div>
+                  <div><Text>{value.name}</Text></div>
+                  <div><Text>{value.email}</Text></div>
+                </div>
+              )
+            })}
 
-             <GetAllUserTable />
+            {/* <GetAllUserTable /> */}
 
 
           </ModalBody>
