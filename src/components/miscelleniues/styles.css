@@ -4,3 +4,22 @@
     overflow-y: scroll;
     scrollbar-width: none;
   }
+
+
+  .chakra-modal__content {
+    height: 100% !important;
+  }
+  .chakra-modal__content .chakra-modal__body{
+    overflow: scroll !important;
+    height: 400px !important;
+  }
+
+  .Mhover:hover{
+    background-color:#38B2AC ;
+    color:white ;
+   
+  }
+  /* _hover={{
+    background: "#38B2AC",
+    color: "white",
+  }} */

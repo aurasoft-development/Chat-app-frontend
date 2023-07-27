@@ -107,7 +107,7 @@ const Sidebar = () => {
       })
     }
   }
-  const accessChat = async (userId) => {
+ const accessChat = async (userId) => {
     try {
       setLoadingChat(true)
       const config = {

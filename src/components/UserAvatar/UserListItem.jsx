@@ -1,48 +1,3 @@
-// import { Avatar, Box, Text } from '@chakra-ui/react';
-// import React from 'react'
-// import { ChatState } from '../Context/ChatProvider';
-
-// const UserListItem = ({user, handleFunction }) => {
-//     const { user } = ChatState();
-//     return (
-//         <Box
-//             onClick={handleFunction}
-//             cursor={"pointer"}
-//             bg={"#E8E8E8"}
-//             _hover={{
-//                 background: "#38B2AC",
-//                 color: "White",
-//             }}
-//             w={"100%"}
-//             display={"flex"}
-//             alignItems={"center"}
-//             color={"black"}
-//             px={3}
-//             py={2}
-//             mb={2}
-//             borderRadius={"lg"}
-//         >
-//             <Avatar
-//                 mr={2}
-//                 size={"sm"}
-//                 cursor={"pointer"}
-//                 name={user.name}
-//                 src={user.pic}
-//             />
-//             <Box>
-//                 <Text>{user.name}</Text>
-//                 <Text fontSize="xs">
-//                     <b>Email:</b>
-//                     {user.email}
-//                 </Text>
-//             </Box>
-//         </Box>
-//     )
-// }
-
-// export default UserListItem
-
-
 import { Avatar } from "@chakra-ui/avatar";
 import { Box, Text } from "@chakra-ui/layout";
 
@@ -52,23 +7,25 @@ const UserListItem = ({ handleFunction ,user}) => {
     <Box
       onClick={handleFunction}
       cursor="pointer"
-      bg="#E8E8E8"
+      // bg="#E8E8E8"
       _hover={{
         background: "#38B2AC",
         color: "white",
       }}
       w="100%"
-      d="flex"
+      // d="flex"
       alignItems="center"
       color="black"
       px={3}
       py={2}
       mb={2}
-      borderRadius="lg"
+      borderRadius="10px"
+      borderBottom={'1px solid #ede5e5'}
+      display={'flex'}
     >
       <Avatar
         mr={2}
-        size="sm"
+        size="md"
         cursor="pointer"
         name={user.name}
         src={user.pic}
@@ -76,7 +33,6 @@ const UserListItem = ({ handleFunction ,user}) => {
       <Box>
         <Text>{user.name}</Text>
         <Text fontSize="xs">
-          <b>Email : </b>
           {user.email}
         </Text>
       </Box>
