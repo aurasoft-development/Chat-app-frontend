@@ -21,7 +21,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const toast = useToast();
-  const { user, selectedChat, setSelectedChat, setNotification} = ChatState();
+  const { user, selectedChat, setSelectedChat, setNotification } = ChatState();
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -73,10 +73,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
 
   const postNotification = async (newMessageReceived) => {
-    console.log("newMessageReceived.sender.name---",newMessageReceived.sender.name)
 
     try {
-      console.log("usersss---",`${user.name}`)
       const config = {
 
         headers: {
@@ -192,6 +190,31 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             justifyContent={{ base: "space-between" }}
             alignItems={'center'}
           >
+            <IconButton display={{ base: "flex", md: 'none' }}
+              icon={<ArrowBackIcon />}
+              onClick={() => setSelectedChat("")}
+            />
+            {messages &&
+              (!selectedChat.isGroupChat ? (
+                <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                  <div>
+                    <ProfileModel
+                      user={getSenderFull(user, selectedChat.users)}
+                    />
+                  </div>
+                  <div>  {getSender(user, selectedChat.users)}</div>
+                </div>
+              ) : (
+
+                <>
+                  {selectedChat.chatName.toUpperCase()}
+                  <UpdateGroupChatModel
+                    fetchMessages={fetchMessages}
+                    fetchAgain={fetchAgain}
+                    setFetchAgain={setFetchAgain}
+                  />
+                </>
+              ))}
             <div style={{ display: "flex", gap: "10px" }}>
               <div style={{
                 color: "green",
@@ -214,33 +237,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 height: "40px",
                 display: "flex",
                 justifyContent: "center"
-              }}> <VideoCallIcon /></div> </div>
-            <IconButton display={{ base: "flex", md: 'none' }}
-              icon={<ArrowBackIcon />}
-              onClick={() => setSelectedChat("")}
-            />
-
-            {messages &&
-              (!selectedChat.isGroupChat ? (
-                <>
-
-                  {getSender(user, selectedChat.users)}
-                  <ProfileModel
-                    user={getSenderFull(user, selectedChat.users)}
-                  />
-                  {/* {console.log('first', getSenderFull(user, selectedChat.users))} */}
-                </>
-              ) : (
-
-                <>
-                  {selectedChat.chatName.toUpperCase()}
-                  <UpdateGroupChatModel
-                    fetchMessages={fetchMessages}
-                    fetchAgain={fetchAgain}
-                    setFetchAgain={setFetchAgain}
-                  />
-                </>
-              ))}
+              }}>
+                <VideoCallIcon />
+              </div>
+            </div>
 
           </Text>
 
@@ -277,7 +277,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               mt={3}
             >
               {isTyping ? (
-                <div style={{ marginBottom: "15px", marginLeft: 0, color: "blue" }}>
+                <div style={{ marginBottom: "15px", marginLeft: 0, color: "green" }}>
                   Typing...
                 </div>
               ) : (

@@ -6,12 +6,15 @@
   }
 
 
-  .chakra-modal__content {
+  /* .chakra-modal__content {
     height: 100% !important;
   }
   .chakra-modal__content .chakra-modal__body{
     overflow: scroll !important;
     height: 400px !important;
+  } */
+  .chakra-modal__body {
+    padding: 0px !important
   }
 
   .Mhover:hover{
@@ -19,7 +22,3 @@
     color:white ;
    
   }
-  /* _hover={{
-    background: "#38B2AC",
-    color: "white",
-  }} */

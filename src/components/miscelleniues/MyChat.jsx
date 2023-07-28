@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from '../Context/ChatProvider';
-import { useToast } from '@chakra-ui/react';
+import { Avatar, useToast } from '@chakra-ui/react';
 import { Box, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import axios from 'axios';
 import { AddIcon } from '@chakra-ui/icons';
 import ChatLoading from './ChatLoading';
-import { getSender } from '../../config/ChatLogic';
+import { getSender, getSenderPic } from '../../config/ChatLogic';
 import GroupChatModel from './GroupChatModel';
 
 const MyChat = () => {
   const [loggedUser, setLoggedUser] = useState();
   const [newMessage, setNewMessage] = useState("");
-  const { notification, selectedChat, setSelectedChat, user, chats, setChats, noti, setNoti } = ChatState();
+  const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
   const toast = useToast();
-  // const [count,setCount]= useState('')
-  // console.log("notification_1--->", notification[0])
 
-  //  console.log("noti---->",noti.data[0].chat._id)
   const fetchChats = async () => {
     try {
       const config = {
@@ -93,7 +90,7 @@ const MyChat = () => {
             <Stack overflowY='scroll'>
               {
                 chats.length > 0 && chats.map((chat) => {
-
+                  console.log("chat ---->11", chat)
                   return <Box
                     onClick={() => {
                       setSelectedChat(chat);
@@ -111,41 +108,39 @@ const MyChat = () => {
                     key={chat._id}
                   >
                     <Text fontSize="15px" fontFamily="Poppins,sans-serif" fontWeight={"600"}>
-                      <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <div>  {!chat.isGroupChat
-                          ? getSender(loggedUser, chat.users)
-                          : chat.chatName}</div>
-
+                      <div style={{ display: "flex", gap: "20px" }}>
+                        <div>
+                          <Avatar size={'md'} cursor={'pointer'} src={
+                            !chat.isGroupChat
+                              ? getSenderPic(loggedUser, chat.users)
+                              : chat.chatName
+                          } />
+                        </div>
+                        <div>
+                          <div>
+                            {!chat.isGroupChat
+                              ? getSender(loggedUser, chat.users)
+                              : chat.chatName}
+                          </div>
+                          <div>
+                            {chat.latestMessage && (
+                              <Text fontSize="12px" fontFamily="Poppins,sans-serif" fontWeight={"600"}>
+                                {/* <b>{chat.latestMessage.sender.name} : </b> */}
+                                {chat.latestMessage.content.length > 50
+                                  ? chat.latestMessage.content.substring(0, 51) + "..."
+                                  : chat.latestMessage.content}
+                              </Text>
+                            )}
+                          </div>
+                        </div>
                         {
                           //   noti.data.forEach((value)=>{
                           //  <div>  {chat._id == value.chat._id} ? <div>{value && value.data && value.data.length > 0 ? value.data.length : ""}</div> :{"0"} </div>
                           //  })
-                          <div>{noti && noti.data && noti.data.length > 0 ? noti.data.length : ""}</div>
+                          // <div>{noti && noti.data && noti.data.length > 0 ? noti.data.length : ""}</div>
                         }
                       </div>
                     </Text>
-                    {chat.latestMessage && (
-                      <Text fontSize="12px" fontFamily="Poppins,sans-serif" fontWeight={"600"}>
-                        <b>{chat.latestMessage.sender.name} : </b>
-                        {chat.latestMessage.content.length > 50
-                          ? chat.latestMessage.content.substring(0, 51) + "..."
-                          : chat.latestMessage.content}
-
-                        {/* front on chat show counter */}
-
-
-                        {/* {notification.map((u)=>{
-                          return(
-                            <div>
-                              {notification.length}
-                             </div>
-                          )
-                          })} */}
-
-                      </Text>
-
-                    )}
-
                   </Box>
                 })}
 

@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Toast, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
+import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Toast, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react'
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons"
 import { ChatState } from '../Context/ChatProvider';
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ChatLoading from './ChatLoading';
 import UserListItem from '../UserAvatar/UserListItem';
-import GetUserModel from './GetUserModel';
+// import GetUserModel from './GetUserModel';
 
 const Sidebar = () => {
   const [search, setSearch] = useState("");
@@ -15,6 +15,7 @@ const Sidebar = () => {
   const [loading, setLoading] = useState(false)
   const [loadingChat, setLoadingChat] = useState();
   const [data, setData] = useState("")
+  const [getUser, seGetUser] = useState("")
   const { user, setSelectedChat, chats, setChats, notification, noti, setNoti } = ChatState();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -43,8 +44,32 @@ const Sidebar = () => {
       });
     }
   };
+  const allUser = async () => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+
+      }
+      const userData = await axios.get(`/api/user/getuser/user`, config)
+      seGetUser(userData.data)
+    } catch (error) {
+      Toast({
+        title: "Error Occured!",
+        description: "User Not Found",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+    }
+
+  }
   useEffect(() => {
     fetchNotifacation();
+    allUser()
   }, [data, notification])
   const deleteNotifacation = async (_id) => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
@@ -107,7 +132,7 @@ const Sidebar = () => {
       })
     }
   }
- const accessChat = async (userId) => {
+  const accessChat = async (userId) => {
     try {
       setLoadingChat(true)
       const config = {
@@ -152,7 +177,7 @@ const Sidebar = () => {
         <div >
           <Menu>
             <MenuButton p={1} className='bellIconBox' >
-              <h5 className='IconInner'>
+              <h5 className='IconInner' >
                 {noti && noti.data && noti.data.length > 0 ? <span>{noti.data.length}</span> : 0}
               </h5>
               <BellIcon className='bell' fontSize={"20px"} m={1} />
@@ -192,38 +217,65 @@ const Sidebar = () => {
         </div>
       </Box>
       <Drawer placement='left' onClose={onClose} isOpen={isOpen} >
-        <DrawerOverlay />
-        <DrawerContent borderWidth={'1px'}>
-           <div style={{display:"flex" ,justifyContent:'space-between'}}>
-           <div><DrawerHeader borderBottomWidth={"1px"} fontSize="15px" fontFamily="Poppins,sans-serif" fontWeight={"600"} >Search Users</DrawerHeader></div>
-           <div><DrawerHeader borderBottomWidth={"1px"} fontSize="15px" fontFamily="Poppins,sans-serif" fontWeight={"600"} cursor={'pointer'}><GetUserModel /></DrawerHeader> </div>
-          </div>
-          <DrawerBody>
-            <Box display={'flex'} pb={2}>
-              <Input
-                placeholder='Search by name or email'
-                mr={2}
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <Button onClick={handleSearch}
-                border={'2px solid skyblue'}
-              >Go</Button>
-            </Box>
-            {loading ? (
-              <ChatLoading />
-            ) : (
-              searchResult?.map(user => (
-                <UserListItem
-                  key={user._id}
-                  user={user}
-                  handleFunction={() => accessChat(user._id)}
-                />
-              ))
-            )}
-            {loadingChat && <Spinner ml={"auto"} display={"flex"} />}
-          </DrawerBody>
-        </DrawerContent>
+        <Tabs variant='enclosed'>
+          <DrawerOverlay />
+          <DrawerContent borderWidth={'1px'}>
+            <TabList>
+              <div style={{ display: "flex", justifyContent: 'space-between' }}>
+                <Tab><div><DrawerHeader  fontSize="15px" fontFamily="Poppins,sans-serif" fontWeight={"600"} >Search Users</DrawerHeader></div></Tab>
+                <Tab> <div><DrawerHeader  fontSize="15px" fontFamily="Poppins,sans-serif" fontWeight={"600"} cursor={'pointer'}>Get All User</DrawerHeader> </div></Tab>
+              </div>
+            </TabList>
+            <TabPanels>
+              <TabPanel><DrawerBody>
+                <Box display={'flex'} >
+                  <Input
+                    placeholder='Search by name or email'
+                    mr={2}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                  <Button onClick={handleSearch}
+                    border={'2px solid skyblue'}
+                  >Go</Button>
+                </Box>
+                {loading ? (
+                  <ChatLoading />
+                ) : (
+                  searchResult?.map(user => (
+                    <UserListItem
+                      key={user._id}
+                      user={user}
+                      handleFunction={() => accessChat(user._id)}
+                    />
+                  ))
+                )}
+                {loadingChat && <Spinner ml={"auto"} display={"flex"} />}
+              </DrawerBody>
+              </TabPanel>
+              <TabPanel height={'555px'} overflow={'scroll'}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px", cursor: "pointer" }} >
+                  {getUser && getUser.data.map((value) => {
+                    return (
+
+                      <div className="Mhover" style={{ display: "flex", borderBottom: '1px solid #ede5e5', gap: "10px", borderRadius: "5px", fontWeight: 'normal', padding: "10px", overflow: "scroll", paddingBottom: "0%" }} onClick={() => accessChat(value._id)} >
+                        <div >
+                          <Avatar size={'md'} cursor={'pointer'} src={value.pic}  />
+
+                        </div>
+                        <div>
+                          <div><Text>{value.name}</Text></div>
+                          <div><Text>{value.email}</Text></div>
+
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </TabPanel>
+            </TabPanels>
+          </DrawerContent>
+        </Tabs>
       </Drawer>
     </div>
 
