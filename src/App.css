@@ -104,3 +104,26 @@
 .chakra-menu__menu-list{
   padding: 0% !important;
 }
+
+:root{
+    --fontF:"sans-serif"
+  
+}
+.innerDiv{
+  display: flex;
+  justify-content: space-between !important;
+}
+
+.divInput{
+  width: 100%; 
+  margin-right: 0% !important;
+}
+.divPiker{
+  /* position: absolute; */
+  /* top:-[100%]; */
+  height: 250px !important;
+  /* width: 500px !important; */
+
+
+  
+}

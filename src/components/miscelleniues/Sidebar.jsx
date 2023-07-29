@@ -70,6 +70,7 @@ const Sidebar = () => {
   useEffect(() => {
     fetchNotifacation();
     allUser()
+    // eslint-disable-next-line
   }, [data, notification])
   const deleteNotifacation = async (_id) => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))

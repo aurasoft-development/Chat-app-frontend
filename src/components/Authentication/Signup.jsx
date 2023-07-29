@@ -20,7 +20,6 @@ function Signup() {
     const submitHandler = async () => {
         setLoading(true);
         if (!name || !email || !password || !pic) {
-            console.log("hello")
             toast({
                 title: "Please Fill all the Feilds",
                 status: "warning",
