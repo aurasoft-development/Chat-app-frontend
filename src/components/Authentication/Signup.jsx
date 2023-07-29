@@ -20,7 +20,6 @@ function Signup() {
     const submitHandler = async () => {
         setLoading(true);
         if (!name || !email || !password || !pic) {
-            console.log("hello")
             toast({
                 title: "Please Fill all the Feilds",
                 status: "warning",
@@ -54,7 +53,7 @@ function Signup() {
             formData.append('email', email)
             formData.append('password', password)
             formData.append('pic', pic)
-            const { data } = await axios.post('https://chat-app-backend-95q8.onrender.com/api/multer/upload', formData,
+            const { data } = await axios.post('/api/multer/upload', formData,
                 config
             );
             swal({

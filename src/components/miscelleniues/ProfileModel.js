@@ -1,5 +1,5 @@
-import { ViewIcon } from '@chakra-ui/icons';
-import { Button, IconButton, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from '@chakra-ui/react'
+// import { ViewIcon } from '@chakra-ui/icons';
+import { Avatar, Button, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
 
 const ProfileModel = ({user,children}) => {
@@ -7,11 +7,7 @@ const ProfileModel = ({user,children}) => {
   return <div>
     {children ? (<span onClick={onOpen}>{children}</span>
         ): (
-            <IconButton 
-            display={{base: "flex"}} 
-            icon={<ViewIcon />} 
-            onClick={onOpen}
-            />
+            <Avatar  size={'md'} cursor={'pointer'} src={user.pic}  onClick={onOpen} />
         )}
          <Modal size={"lg"}  isOpen={isOpen} onClose={onClose} isCentered >
         <ModalOverlay />

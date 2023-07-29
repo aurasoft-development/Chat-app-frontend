@@ -84,6 +84,7 @@
   background-color: rgb(231, 231, 231);
   border-radius: 50%;
   margin-right: 10px;
+  
 }
 
 .bellIconBox .IconInner {
@@ -93,4 +94,36 @@
   right: 5px;
   font-weight: bold;
   color: red;
+
+}
+
+.chakra-modal__header{
+  padding: 0% !important;
+}
+
+.chakra-menu__menu-list{
+  padding: 0% !important;
+}
+
+:root{
+    --fontF:"sans-serif"
+  
+}
+.innerDiv{
+  display: flex;
+  justify-content: space-between !important;
+}
+
+.divInput{
+  width: 100%; 
+  margin-right: 0% !important;
+}
+.divPiker{
+  /* position: absolute; */
+  /* top:-[100%]; */
+  height: 250px !important;
+  /* width: 500px !important; */
+
+
+  
 }
