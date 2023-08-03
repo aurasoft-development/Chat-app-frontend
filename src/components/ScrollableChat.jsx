@@ -16,7 +16,7 @@ const ScrollableChat = ({ messages }) => {
              <div> ({formattedTimestamp}):</div>
             {messages &&
                 messages.map((m, i) => (
-                    <div style={{ display: "flex" }} key={m._id}>
+                    <div className="fontS" style={{ display: "flex" }} key={m._id}>
                         {/* {m.time <= tt ? ("12:00PM") : ("")} */}
                         {(isSameSender(messages, m, i, user._id) ||
                             isLastMessage(messages, i, user._id)) && (
@@ -43,7 +43,6 @@ const ScrollableChat = ({ messages }) => {
                                 padding: "5px 20px",
                                 maxWidth: "75%",
                                 fontSize: "15px",
-                                fontFamily: "Poppins,sans-serif",
                                 fontWeight: "bold",
                             }}
                         >

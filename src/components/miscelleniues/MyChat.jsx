@@ -15,6 +15,7 @@ const MyChat = () => {
   const [data, setData] = useState("");
   const { selectedChat, setSelectedChat, user, chats, setChats, noti } = ChatState();
   const toast = useToast();
+  console.log("selcetedChat----->", selectedChat)
 
 
   const fetchChats = async () => {
@@ -41,6 +42,7 @@ const MyChat = () => {
   }
 
   const deleteNotifacation = async (_id) => {
+    // window.location.reload()
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     try {
       const config = {
@@ -53,6 +55,7 @@ const MyChat = () => {
         config
       );
       setData(data)
+
     } catch (error) {
       Toast({
         title: "Error Occured!",
@@ -84,6 +87,7 @@ const MyChat = () => {
         borderWidth="1px"
       >
         <Box
+          className='fontS'
           pb={3}
           px={3}
           fontSize={{ base: "30px", md: "20px" }}
@@ -91,7 +95,6 @@ const MyChat = () => {
           w="100%"
           justifyContent="space-between"
           alignItems="center"
-          fontFamily="Poppins,sans-serif"
           fontWeight={"600"}
         >
           My Chats
@@ -135,9 +138,9 @@ const MyChat = () => {
                     textAlign={"left"}
                     key={chat._id}
                   >
-                    <Text fontSize="15px" fontFamily="Poppins,sans-serif" fontWeight={"600"} >
+                    <Text className='fontS' fontSize="15px"  fontWeight={"600"} >
                       <div className='innerDiv' >
-                        <div style={{ display: "flex", gap: "20px", fontFamily: "sans-serif" }}>
+                        <div style={{ display: "flex", gap: "20px" }}>
                           <div>
                             <Avatar size={'md'} cursor={'pointer'} src={
                               !chat.isGroupChat
@@ -153,7 +156,7 @@ const MyChat = () => {
                             </div>
                             <div>
                               {chat.latestMessage && (
-                                <Text fontSize="12px" fontFamily="Poppins,sans-serif" fontWeight={"600"}>
+                                <Text fontSize="12px"  fontWeight={"600"}>
                                   {/* <b>{chat.latestMessage.sender.name} : </b> */}
                                   {chat.latestMessage.content.length > 50
                                     ? chat.latestMessage.content.substring(0, 51) + "..."
@@ -165,7 +168,7 @@ const MyChat = () => {
 
                         </div>
                         <div style={{ display: "flex", flexDirection: "column" }}>
-                          <div style={{ fontWeight: "400", fontSize: "12px", fontFamily: "sans-serif" }}>
+                          <div style={{ fontWeight: "400", fontSize: "12px" }}>
                             {chat.latestMessage && (
                               <Text>
                                 {chat.latestMessage.time}
@@ -173,14 +176,14 @@ const MyChat = () => {
                             )}
                           </div>
                           <div style={{ display: "flex", justifyContent: "center", background: "#10e55b", borderRadius: "50%", color: "white" }}>
-                              {
-                                noti.data.map((value) => {
+                            {
+                              noti.data.map((value) => {
                                 return (
-                                  <>
-                                    {value.chat.users[0] === getSenderId(loggedUser, chat.users) ? <div onClick={()=>deleteNotifacation(value._id)}>
+                                  <div onClick={() => deleteNotifacation(value._id)}>
+                                    {value.sender_id === getSenderId(loggedUser, chat.users) ? <div >
                                       {value.messageData.length > 0 ? value.messageData.length : ""}
                                     </div> : <div>{""}</div>}
-                                  </>
+                                  </div>
                                 )
                               })
                             }

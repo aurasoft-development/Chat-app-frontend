@@ -167,12 +167,12 @@ const Sidebar = () => {
         >
           <Button className='btn' variant="ghost" onClick={onOpen}>
             <i className="fas fa-search" />
-            <Text display={{ base: "none", md: "flex" }} px="4" fontSize="20px" fontFamily="Poppins,sans-serif" fontWeight={"600"} >
+            <Text className='fontS' display={{ base: "none", md: "flex" }} px="4" fontSize="20px" fontWeight={"600"} >
               Search User
             </Text>
           </Button>
         </Tooltip>
-        <Text fontSize="20px" fontFamily="Poppins,sans-serif" fontWeight={"600"}  >
+        <Text className='fontS' fontSize="20px" fontWeight={"600"}  >
           ChatApp
         </Text>
         <div >
@@ -202,12 +202,12 @@ const Sidebar = () => {
               ))}
             </MenuList>
           </Menu>
-          <Menu>
-            <MenuButton as={Button} bg="white" rightIcon={<ChevronDownIcon />}>
+          <Menu  >
+            <MenuButton className='fontS' as={Button} bg="white" rightIcon={<ChevronDownIcon />}>
               <Avatar size={'sm'} cursor={'pointer'} name={user.name} src={user.pic} />
               {user.email}
             </MenuButton>
-            <MenuList>
+            <MenuList className='fontS'>
               <ProfileModel user={user}>
                 <MenuItem >My Profile</MenuItem>
               </ProfileModel>
@@ -222,12 +222,12 @@ const Sidebar = () => {
           <DrawerOverlay />
           <DrawerContent borderWidth={'1px'}>
             <TabList>
-              <div style={{ display: "flex", justifyContent: 'space-between' }}>
-                <Tab><div><DrawerHeader  fontSize="15px" fontFamily="Poppins,sans-serif" fontWeight={"600"} >Search Users</DrawerHeader></div></Tab>
-                <Tab> <div><DrawerHeader  fontSize="15px" fontFamily="Poppins,sans-serif" fontWeight={"600"} cursor={'pointer'}>Get All User</DrawerHeader> </div></Tab>
+              <div className='fontS' style={{ display: "flex", justifyContent: 'space-between' }}>
+                <Tab><div><DrawerHeader fontSize="15px" fontWeight={"600"} >Search User</DrawerHeader></div></Tab>
+                <Tab> <div><DrawerHeader fontSize="15px" fontWeight={"600"} cursor={'pointer'}>All Users</DrawerHeader> </div></Tab>
               </div>
             </TabList>
-            <TabPanels>
+            <TabPanels className='fontS'>
               <TabPanel><DrawerBody>
                 <Box display={'flex'} >
                   <Input
@@ -261,7 +261,7 @@ const Sidebar = () => {
 
                       <div className="Mhover" style={{ display: "flex", borderBottom: '1px solid #ede5e5', gap: "10px", borderRadius: "5px", fontWeight: 'normal', padding: "10px", overflow: "scroll", paddingBottom: "0%" }} onClick={() => accessChat(value._id)} >
                         <div >
-                          <Avatar size={'md'} cursor={'pointer'} src={value.pic}  />
+                          <Avatar size={'md'} cursor={'pointer'} src={value.pic} />
 
                         </div>
                         <div>

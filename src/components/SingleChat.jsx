@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from './Context/ChatProvider'
-import { Box, Button, FormControl, IconButton, Input, Spinner, Text, useToast } from '@chakra-ui/react';
+import { Box, FormControl, IconButton, Input, Spinner, Text, useToast } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { getSender, getSenderFull } from '../config/ChatLogic';
 import ProfileModel from './miscelleniues/ProfileModel';
@@ -114,7 +114,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     socket.on("message received", (newMessageReceived) => {
       if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
         if (newMessageReceived) {
-          postNotification(newMessageReceived)
+          // postNotification(newMessageReceived)
           setFetchAgain(!fetchAgain);
         }
       } else {
@@ -122,6 +122,17 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     });
   });
+
+  useEffect(() => {
+    socket.on("message received", (newMessageReceived) => {
+      if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
+        if (newMessageReceived) {
+          postNotification(newMessageReceived)
+        }
+      }
+    });
+  }, []);
+
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
       socket.emit("stop typing", selectedChat._id);
@@ -156,9 +167,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
-   const Empty = () =>{
+  const Empty = () => {
     setNewMessage("")
-   }
+  }
 
   const addEmoji = (e) => {
     let sym = e.unified.split("-");
@@ -166,6 +177,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     sym.forEach((el) => codesArray.push("0x" + el));
     let emoji = String.fromCodePoint(...codesArray);
     setNewMessage(newMessage + emoji);
+
   };
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
@@ -194,11 +206,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       {selectedChat ? (
         <>
           <Text
+            className='fontS'
             fontSize={{ base: "25px", md: "20px" }}
             pb={3}
             px={2}
             w='100%'
-            fontFamily={"Poppins,sans-serif"}
             fontWeight={"600"}
             display={'flex'}
             justifyContent={{ base: "space-between" }}
@@ -333,8 +345,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         </>
       ) : (
         // to get socket.io on same page
-        <Box display="flex" alignItems="center" justifyContent="center" h="100%">
-          <Text pb={3} fontSize="20px" fontFamily="Poppins,sans-serif" fontWeight={"600"}>
+        <Box className='fontS' display="flex" alignItems="center" justifyContent="center" h="100%">
+          <Text pb={3} fontSize="20px" fontWeight={"600"}>
             Click on a user to start chatting
           </Text>
         </Box>

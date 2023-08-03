@@ -116,8 +116,8 @@ const GroupChatModel = ({ children }) => {
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader
+                    className='fontS'
                         fontSize={"20px"}
-                        fontFamily={"Poppins,sans-serif"}
                         display={"flex"}
                         justifyContent={"center"}
                         bg={'#258c60'}

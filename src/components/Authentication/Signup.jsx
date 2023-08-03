@@ -59,7 +59,7 @@ function Signup() {
             swal({
                 title: "Registration Successful?",
                 icon: "success",
-                button: "ok"
+                button: "Ok"
             })
 
             localStorage.setItem("userInfo", JSON.stringify(data));

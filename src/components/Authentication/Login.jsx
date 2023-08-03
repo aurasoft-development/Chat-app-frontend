@@ -47,7 +47,7 @@ const Login = () => {
       swal({
         title: "Login Successful?",
         icon: "success",
-        button: "ok"
+        button: "Ok"
       })
       localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
