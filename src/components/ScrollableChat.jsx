@@ -3,20 +3,16 @@ import { Tooltip } from "@chakra-ui/tooltip";
 import ScrollableFeed from "react-scrollable-feed";
 import { ChatState } from './Context/ChatProvider'
 import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser, } from "../config/ChatLogic";
-import moment from 'moment';
 
 
 const ScrollableChat = ({ messages }) => {
-    const formattedTimestamp = moment(messages.timestamp).format('MMMM Do YYYY, h:mm:ss a');
     const { user } = ChatState();
-    // var today = new Date();
-    // var time = today.getHours() + ":" + today.getMinutes()
+  
     return (
         <ScrollableFeed> 
-             <div> ({formattedTimestamp}):</div>
             {messages &&
                 messages.map((m, i) => (
-                    <div style={{ display: "flex" }} key={m._id}>
+                    <div className="fontS fontS" style={{ display: "flex" }} key={m._id}>
                         {/* {m.time <= tt ? ("12:00PM") : ("")} */}
                         {(isSameSender(messages, m, i, user._id) ||
                             isLastMessage(messages, i, user._id)) && (
@@ -43,7 +39,6 @@ const ScrollableChat = ({ messages }) => {
                                 padding: "5px 20px",
                                 maxWidth: "75%",
                                 fontSize: "15px",
-                                fontFamily: "Poppins,sans-serif",
                                 fontWeight: "bold",
                             }}
                         >
@@ -52,8 +47,6 @@ const ScrollableChat = ({ messages }) => {
                                 <div>{m.content}</div>
                                 <div style={{ fontSize: "10px" }} >{m.time}</div>
                             </div>
-
-                            {/* {m.createdAt} */}
                         </span>
                     </div>
                 ))}

@@ -116,12 +116,13 @@ const GroupChatModel = ({ children }) => {
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader
-                        fontSize={"20px"}
-                        fontFamily={"Poppins,sans-serif"}
+                    className='fontS sizeF'
+                        // fontSize={"20px"}
                         display={"flex"}
                         justifyContent={"center"}
                         bg={'#258c60'}
                         color={'white'}
+                        p={'20px !important'}
                     >Create Group Chat</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody display={"flex"} flexDir={"column"} alignItems={"center"} bg={'white'}>
