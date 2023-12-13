@@ -1,0 +1,48 @@
+.Audio_model_footer {
+    display: flex;
+    justify-content: center ;
+    gap: 30px;
+}
+
+.main_model_audio{
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.footer_call_end {
+    background: red;
+    width: 50px;
+    border-radius: 30px;
+    color: white;
+    text-align: center;
+    padding: 5px 0px 0px 0px;
+    cursor: pointer;
+}
+
+.footer_mice {
+    background: #c8c3ba;
+    border-radius: 50px;
+    padding: 7px 7px 0px 7px;
+    cursor: pointer;
+}
+
+.audio_body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.audio_main_div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 0px;
+}
+
+/* .chakra-modal__body {
+    padding: 50px 0px !important;
+} */
+
+.css-pv22qu {
+    background: rgb(237, 237, 237) !important;
+}

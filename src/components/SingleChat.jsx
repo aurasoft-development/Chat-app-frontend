@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from './Context/ChatProvider'
-import { Box, FormControl, IconButton, Input, Spinner, Text, useToast } from '@chakra-ui/react';
+import { Box, Button, FormControl, IconButton, Input, InputGroup, InputLeftElement, InputRightElement, Spinner, Text, useToast } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { getSender, getSenderFull } from '../config/ChatLogic';
 import ProfileModel from './miscelleniues/ProfileModel';
 import UpdateGroupChatModel from './miscelleniues/UpdateGroupChatModel';
-import CallIcon from '@mui/icons-material/Call';
 import VideoCallIcon from '@mui/icons-material/VideoCall';
+import CallIcon from '@mui/icons-material/Call';
 import io from "socket.io-client";
 import axios from 'axios';
 import ScrollableChat from './ScrollableChat';
+import MoodIcon from '@mui/icons-material/Mood';
+import data from '@emoji-mart/data'
+import SendIcon from '@mui/icons-material/Send';
+import { useNavigate } from "react-router-dom";
+import Picker from '@emoji-mart/react'
 const ENDPOINT = "http://127.0.0.1:5000";
 var socket, selectedChatCompare;
 
@@ -21,8 +26,26 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const toast = useToast();
-  const { user, selectedChat, setSelectedChat, setNotification} = ChatState();
+  const [showEmojis, setShowEmojis] = useState(false);
+  const { user, selectedChat, setSelectedChat, setNotification, setVideo } = ChatState();
+  const navigation = useNavigate();
 
+  const sendVideo = async () => {
+    if (selectedChat && selectedChat.users.length > 0) {
+      // eslint-disable-next-line
+      selectedChat.users.map((e) => {
+        if (user._id !== e._id) {
+          const data = {
+            url: `/video/call/${user._id}`,
+            sender_id: user._id,
+            receiver_id: e._id,
+            names: user.names
+          }
+          socket.emit('send_notification', data)
+        }
+      })
+    }
+  }
   const fetchMessages = async () => {
     if (!selectedChat) return;
 
@@ -64,6 +87,15 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    // getVideo()
+    socket.on('receive_notification', (data) => {
+      console.log("receiverd data --->", data)
+      setVideo(data)
+      navigation('/call/model')
+    })
+    // eslint-disable-next-line
+  })
 
   useEffect(() => {
     fetchMessages();
@@ -73,10 +105,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
 
   const postNotification = async (newMessageReceived) => {
-    console.log("newMessageReceived.sender.name---",newMessageReceived.sender.name)
-
     try {
-      console.log("usersss---",`${user.name}`)
       const config = {
 
         headers: {
@@ -112,7 +141,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     socket.on("message received", (newMessageReceived) => {
       if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
         if (newMessageReceived) {
-          postNotification(newMessageReceived)
+          // postNotification(newMessageReceived)
           setFetchAgain(!fetchAgain);
         }
       } else {
@@ -120,8 +149,20 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     });
   });
+
+  useEffect(() => {
+    socket.on("message received", (newMessageReceived) => {
+      if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
+        if (newMessageReceived) {
+          postNotification(newMessageReceived)
+        }
+      }
+    });
+    // eslint-disable-next-line
+  }, []);
+
   const sendMessage = async (event) => {
-    if (event.key === "Enter" && newMessage) {
+    if (event.key === "Enter" ? event.key === "Enter" : event === "submit" && newMessage) {
       socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
@@ -153,8 +194,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     }
   };
+  const addEmoji = (e) => {
+    let sym = e.unified.split("-");
+    let codesArray = [];
+    sym.forEach((el) => codesArray.push("0x" + el));
+    let emoji = String.fromCodePoint(...codesArray);
+    setNewMessage(newMessage + emoji);
 
-
+  };
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
     // eslint-disable-next-line
@@ -177,59 +224,38 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     }, timerLength);
   };
+  // we will use this to navigate next page
+  const history = useNavigate();
+
   return (
     <>
       {selectedChat ? (
         <>
           <Text
+            className='fontS sizeF'
             fontSize={{ base: "25px", md: "20px" }}
             pb={3}
             px={2}
             w='100%'
-            fontFamily={"Poppins,sans-serif"}
             fontWeight={"600"}
             display={'flex'}
             justifyContent={{ base: "space-between" }}
             alignItems={'center'}
           >
-            <div style={{ display: "flex", gap: "10px" }}>
-              <div style={{
-                color: "green",
-                cursor: "pointer",
-                background: "#EDF2F7",
-                width: "40px",
-                paddingTop: "8px",
-                borderRadius: "6px",
-                height: "40px",
-                display: "flex",
-                justifyContent: "center"
-              }}><CallIcon /> </div>
-              <div style={{
-                color: "green",
-                cursor: "pointer",
-                background: "#EDF2F7",
-                width: "40px",
-                paddingTop: "8px",
-                borderRadius: "6px",
-                height: "40px",
-                display: "flex",
-                justifyContent: "center"
-              }}> <VideoCallIcon /></div> </div>
             <IconButton display={{ base: "flex", md: 'none' }}
               icon={<ArrowBackIcon />}
               onClick={() => setSelectedChat("")}
             />
-
             {messages &&
               (!selectedChat.isGroupChat ? (
-                <>
-
-                  {getSender(user, selectedChat.users)}
-                  <ProfileModel
-                    user={getSenderFull(user, selectedChat.users)}
-                  />
-                  {/* {console.log('first', getSenderFull(user, selectedChat.users))} */}
-                </>
+                <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                  <div>
+                    <ProfileModel
+                      user={getSenderFull(user, selectedChat.users)}
+                    />
+                  </div>
+                  <div>  {getSender(user, selectedChat.users)}</div>
+                </div>
               ) : (
 
                 <>
@@ -241,6 +267,42 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                   />
                 </>
               ))}
+            <div style={{ display: "flex", gap: "10px" }}>
+              <div style={{
+                color: "green",
+                cursor: "pointer",
+                background: "#EDF2F7",
+                width: "40px",
+                paddingTop: "8px",
+                borderRadius: "6px",
+                height: "40px",
+                display: "flex",
+                justifyContent: "center"
+              }}> <CallIcon onClick={() => {
+                sendVideo();
+                history(`/video/call/${user._id}`);
+              }}
+                /> </div>
+
+              <div style={{
+                color: "green",
+                cursor: "pointer",
+                background: "#EDF2F7",
+                width: "40px",
+                paddingTop: "8px",
+                borderRadius: "6px",
+                height: "40px",
+                display: "flex",
+                justifyContent: "center"
+              }}>
+                <VideoCallIcon
+                  onClick={() => {
+                    sendVideo();
+                    history(`/video/call/${user._id}`);
+                  }}
+                />
+              </div>
+            </div>
 
           </Text>
 
@@ -275,30 +337,55 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               id="first-name"
               isRequired
               mt={3}
+              onClick={sendMessage}
             >
               {isTyping ? (
-                <div style={{ marginBottom: "15px", marginLeft: 0, color: "blue" }}>
+                <div style={{ marginBottom: "15px", marginLeft: 0, color: "green" }}>
                   Typing...
                 </div>
               ) : (
                 <></>
               )}
+              <InputGroup>
+                <InputLeftElement >
+                  <Button>  <div className="button" onClick={() => setShowEmojis(!showEmojis)}> <MoodIcon /> </div> </Button>
+                </InputLeftElement>
+                {/* <div className='divInput'> */}
+                <Input
+                  variant="filled"
+                  bg="#E0E0E0"
+                  placeholder="Enter a message.."
+                  value={newMessage}
+                  onChange={typingHandler}
+                />
+                <InputRightElement className="button">
+                  <Button type='submit' onClick={() => sendMessage('submit')}> <SendIcon /> </Button>
+                </InputRightElement>
+                <div>
+                  {showEmojis && (
+                    <div className="divPiker">
+                      <Picker
+                        data={data}
+                        emojiSize={20}
+                        emojiButtonSize={28}
+                        onEmojiSelect={addEmoji}
+                        maxFrequentRows={0}
+                      />
+                    </div>
+                  )}
 
-              <Input
-                variant="filled"
-                bg="#E0E0E0"
-                placeholder="Enter a message.."
-                value={newMessage}
-                onChange={typingHandler}
-              />
+
+                </div>
+                {/* </div> */}
+              </InputGroup>
             </FormControl>
 
           </Box>
         </>
       ) : (
         // to get socket.io on same page
-        <Box display="flex" alignItems="center" justifyContent="center" h="100%">
-          <Text pb={3} fontSize="20px" fontFamily="Poppins,sans-serif" fontWeight={"600"}>
+        <Box className='fontS sizeF' display="flex" alignItems="center" justifyContent="center" h="100%">
+          <Text pb={3} fontSize="20px" fontWeight={"600"}>
             Click on a user to start chatting
           </Text>
         </Box>

@@ -12,6 +12,7 @@ function Signup() {
     const [password, setPassword] = useState();
     const [confirmpassword, setConfirmpassword] = useState();
     const [pic, setPic] = useState();
+    // eslint-disable-next-line
     const [loading, setLoading] = useState(false)
     const [picLoading, setPicLoading] = useState(false);
     const toast = useToast();
@@ -20,7 +21,6 @@ function Signup() {
     const submitHandler = async () => {
         setLoading(true);
         if (!name || !email || !password || !pic) {
-            console.log("hello")
             toast({
                 title: "Please Fill all the Feilds",
                 status: "warning",
@@ -54,13 +54,13 @@ function Signup() {
             formData.append('email', email)
             formData.append('password', password)
             formData.append('pic', pic)
-            const { data } = await axios.post('https://chat-app-backend-95q8.onrender.com/api/multer/upload', formData,
+            const { data } = await axios.post('/api/multer/upload', formData,
                 config
             );
             swal({
-                title: "Registration Successful?",
+                title: "Registration Successful",
                 icon: "success",
-                button: "ok"
+                button: "OK"
             })
 
             localStorage.setItem("userInfo", JSON.stringify(data));
@@ -80,46 +80,49 @@ function Signup() {
     }
     return <VStack spacing={"2px"}>
         <FormControl id="first-name" isRequired>
-            <FormLabel>Name</FormLabel>
-            <Input placeholder='Enter Your Name'
+            <FormLabel className='sizeF fontS'>Name</FormLabel>
+            <Input className='sizeF' placeholder='Enter Your Name'
                 onChange={(e) => setName(e.target.value)} />
         </FormControl>
-        <FormControl id="email" isRequired>
-            <FormLabel>Email</FormLabel>
-            <Input placeholder='Enter Your Email'
+        <FormControl id="email" isRequired className="fontS sizeF">
+            <FormLabel className='fontS sizeF'>Email</FormLabel>
+            <Input className='fontS sizeF' placeholder='Enter Your Email'
                 onChange={(e) => setEmail(e.target.value)} />
         </FormControl>
-        <FormControl id="password" isRequired>
-            <FormLabel>Password</FormLabel>
+        <FormControl id="password" isRequired className="fontS sizeF">
+            <FormLabel className='fontS sizeF'>Password</FormLabel>
             <InputGroup>
                 <Input
+                    className='fontS sizeF'
                     type={show ? "text" : "password"}
                     placeholder='Enter Your Password'
                     onChange={(e) => setPassword(e.target.value)} />
                 <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" color={"black"} onClick={handleClick}>
+                    <Button className='fontS' h="1.75rem" size="sm" color={"black"} onClick={handleClick}>
                         {show ? "Hide" : "Show"}
                     </Button>
                 </InputRightElement>
             </InputGroup>
         </FormControl>
-        <FormControl id="password" isRequired>
-            <FormLabel>Confirm Password</FormLabel>
+        <FormControl id="password" isRequired className="fontS">
+            <FormLabel className='fontS sizeF'>Confirm Password</FormLabel>
             <InputGroup>password
                 <Input
+                    className='fontS sizeF'
                     type={show ? "text" : "password"}
                     placeholder='Enter Your Confirm Password'
                     onChange={(e) => setConfirmpassword(e.target.value)} />
                 <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" color={"black"} onClick={handleClick}>
+                    <Button className='fontS' h="1.75rem" size="sm" color={"black"} onClick={handleClick}>
                         {show ? "Hide" : "Show"}
                     </Button>
                 </InputRightElement>
             </InputGroup>
         </FormControl>
-        <FormControl id="pic" isRequired>
-            <FormLabel>Upload Your Picture</FormLabel>
+        <FormControl id="pic" isRequired className="fontS">
+            <FormLabel className='fontS sizeF'>Upload Your Picture</FormLabel>
             <Input
+                className='fontS sizeF'
                 type="file"
                 p={1.5}
                 fontSize={'13px'}
@@ -127,6 +130,7 @@ function Signup() {
                 onChange={(e) => setPic(e.target.files[0])} />
         </FormControl>
         <Button
+            className='fontS sizeF'
             colorScheme='blue'
             width="100%"
             style={{ marginTop: 15 }}

@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from '../Context/ChatProvider';
-import { useToast } from '@chakra-ui/react';
+import { Avatar, Toast, useToast } from '@chakra-ui/react';
 import { Box, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import axios from 'axios';
 import { AddIcon } from '@chakra-ui/icons';
 import ChatLoading from './ChatLoading';
-import { getSender } from '../../config/ChatLogic';
+import { getSender, getSenderId, getSenderPic } from '../../config/ChatLogic';
 import GroupChatModel from './GroupChatModel';
 
 const MyChat = () => {
   const [loggedUser, setLoggedUser] = useState();
+  // eslint-disable-next-line
   const [newMessage, setNewMessage] = useState("");
-  const { notification, selectedChat, setSelectedChat, user, chats, setChats, noti, setNoti } = ChatState();
+  // eslint-disable-next-line
+  const [data, setData] = useState("");
+  const { selectedChat, setSelectedChat, user, chats, setChats, noti } = ChatState();
   const toast = useToast();
-  // const [count,setCount]= useState('')
-  // console.log("notification_1--->", notification[0])
 
-  //  console.log("noti---->",noti.data[0].chat._id)
+
   const fetchChats = async () => {
     try {
       const config = {
@@ -40,9 +41,38 @@ const MyChat = () => {
       })
     }
   }
+
+  const deleteNotifacation = async (_id) => {
+    // window.location.reload()
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const data = await axios.delete(
+        `/api/notification/delete_notification/${_id}`,
+        config
+      );
+      setData(data)
+
+    } catch (error) {
+      Toast({
+        title: "Error Occured!",
+        description: "Failed to Load the Messages",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+    }
+  }
+
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
+    // eslint-disable-next-line
   }, [])
   return (
     loggedUser
@@ -58,6 +88,7 @@ const MyChat = () => {
         borderWidth="1px"
       >
         <Box
+          className='fontS sizeF'
           pb={3}
           px={3}
           fontSize={{ base: "30px", md: "20px" }}
@@ -65,14 +96,13 @@ const MyChat = () => {
           w="100%"
           justifyContent="space-between"
           alignItems="center"
-          fontFamily="Poppins,sans-serif"
           fontWeight={"600"}
         >
           My Chats
           <GroupChatModel>
             <Button
               display={"flex"}
-              fontSize={{ base: "20px", md: "10px", lg: "20px" }}
+              fontSize={{ base: "20px", md: "10px", lg: "15px" }}
               rightIcon={<AddIcon />}
               background={"none"}
             >New Group Chat</Button>
@@ -93,7 +123,6 @@ const MyChat = () => {
             <Stack overflowY='scroll'>
               {
                 chats.length > 0 && chats.map((chat) => {
-
                   return <Box
                     onClick={() => {
                       setSelectedChat(chat);
@@ -110,42 +139,59 @@ const MyChat = () => {
                     textAlign={"left"}
                     key={chat._id}
                   >
-                    <Text fontSize="15px" fontFamily="Poppins,sans-serif" fontWeight={"600"}>
-                      <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <div>  {!chat.isGroupChat
-                          ? getSender(loggedUser, chat.users)
-                          : chat.chatName}</div>
+                    <Text className='fontS sizeF'  fontWeight={"600"} >
+                      <div className='innerDiv' >
+                        <div style={{ display: "flex", gap: "20px" }}>
+                          <div>
+                            <Avatar size={'md'} cursor={'pointer'} src={
+                              !chat.isGroupChat
+                                ? getSenderPic(loggedUser, chat.users)
+                                : chat.chatName
+                            } />
+                          </div>
+                          <div>
+                            <div>
+                              {!chat.isGroupChat
+                                ? getSender(loggedUser, chat.users)
+                                : chat.chatName}
+                            </div>
+                            <div>
+                              {chat.latestMessage && (
+                                <Text fontSize="12px"  fontWeight={"600"}>
+                                  {/* <b>{chat.latestMessage.sender.name} : </b> */}
+                                  {chat.latestMessage.content.length > 50
+                                    ? chat.latestMessage.content.substring(0, 51) + "..."
+                                    : chat.latestMessage.content}
+                                </Text>
+                              )}
+                            </div>
+                          </div>
 
-                        {
-                          //   noti.data.forEach((value)=>{
-                          //  <div>  {chat._id == value.chat._id} ? <div>{value && value.data && value.data.length > 0 ? value.data.length : ""}</div> :{"0"} </div>
-                          //  })
-                          <div>{noti && noti.data && noti.data.length > 0 ? noti.data.length : ""}</div>
-                        }
+                        </div>
+                        <div style={{ display: "flex", flexDirection: "column" }}>
+                          <div style={{ fontWeight: "400", fontSize: "12px" }}>
+                            {chat.latestMessage && (
+                              <Text>
+                                {chat.latestMessage.time}
+                              </Text>
+                            )}
+                          </div>
+                          <div style={{ display: "flex", justifyContent: "center", background: "#10e55b", borderRadius: "50%", color: "white" }}>
+                            {
+                              noti.data.map((value) => {
+                                return (
+                                  <div onClick={() => deleteNotifacation(value._id)}>
+                                    {value.sender_id === getSenderId(loggedUser, chat.users) ? <div >
+                                      {value.messageData.length > 0 ? value.messageData.length : ""}
+                                    </div> : <div>{""}</div>}
+                                  </div>
+                                )
+                              })
+                            }
+                          </div>
+                        </div>
                       </div>
                     </Text>
-                    {chat.latestMessage && (
-                      <Text fontSize="12px" fontFamily="Poppins,sans-serif" fontWeight={"600"}>
-                        <b>{chat.latestMessage.sender.name} : </b>
-                        {chat.latestMessage.content.length > 50
-                          ? chat.latestMessage.content.substring(0, 51) + "..."
-                          : chat.latestMessage.content}
-
-                        {/* front on chat show counter */}
-
-
-                        {/* {notification.map((u)=>{
-                          return(
-                            <div>
-                              {notification.length}
-                             </div>
-                          )
-                          })} */}
-
-                      </Text>
-
-                    )}
-
                   </Box>
                 })}
 

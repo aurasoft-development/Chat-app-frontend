@@ -1,36 +1,22 @@
-// import './App.css';
-// import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-// import Homepage from './Pages/Homepage';
-// import ChatPage from './Pages/ChatPage';
-// import ChatProvider from './components/Context/ChatProvider';
-// const router = createBrowserRouter([
-//   { path: "/", element: <Homepage /> },
-//   { path: "/chat", element: <ChatPage /> },
-// ]);
-// function App() {
-//   return <div className="App">
-//     <ChatProvider>
-//       <RouterProvider router={router} />
-//     </ChatProvider>
-//   </div>
-// }
-
-// export default App;
-
-
 import "./App.css";
 // import Homepage from "./Pages/Homepage";
-import { Route,Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import ChatPage from "./Pages/ChatPage";
 import Homepage from './Pages/Homepage';
-// import Chatpage from "./Pages/Chatpage";
+// import MeetPage from "./video/MeetPage";
+import CallModel from "./components/CallModel/CallModel";
+import AudioPage from "./video/AudioPage";
 
 function App() {
   return (
     <div className="App">
+
       <Routes>
-      <Route path="/" element={< Homepage />} />
-      <Route path="/chat" element={<ChatPage />} />
+        <Route path="/" element={< Homepage />} />
+        <Route path="/chat" element={<ChatPage />} />
+        {/* <Route path="/video/call/:id" element={< MeetPage />} /> */}
+        <Route path="/video/call/:id" element={< AudioPage />} />
+        <Route path="/call/model" element={< CallModel />} />
       </Routes>
     </div>
   );

@@ -84,6 +84,7 @@
   background-color: rgb(231, 231, 231);
   border-radius: 50%;
   margin-right: 10px;
+
 }
 
 .bellIconBox .IconInner {
@@ -93,4 +94,62 @@
   right: 5px;
   font-weight: bold;
   color: red;
+
+}
+
+.chakra-modal__header {
+  padding: 0% !important;
+}
+
+.chakra-menu__menu-list {
+  padding: 0% !important;
+}
+
+:root {
+  --fontF: "sans-serif"
+
+}
+
+.innerDiv {
+  display: flex;
+  justify-content: space-between !important;
+}
+
+.divInput {
+  width: 100%;
+  margin-right: 0% !important;
+}
+
+em-emoji-picker {
+  position: absolute !important;
+  top: -450px !important;
+  left: 0 !important;
+
+}
+
+.chakra-input__group css-bx0blc {
+  height: 0 !important;
+}
+
+.fontS {
+  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Zilla Slab', serif; */
+}
+.sizeF{
+  font-size: 15px !important;
+}
+
+.App {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.button {
+  cursor: pointer;
+}
+.swal-button:hover{
+  background-color: yellowgreen !important;
+} 
+.css-h2iqbi:hover{
+  background-color: #ededed !important;
 }

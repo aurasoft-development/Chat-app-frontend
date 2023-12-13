@@ -32,7 +32,6 @@ const Login = () => {
       return;
     }
 
-    // console.log(email, password);
     try {
       const config = {
         headers: {
@@ -46,13 +45,13 @@ const Login = () => {
         config
       );
       swal({
-        title: "Login Successful?",
+        title: "Login Successful",
         icon: "success",
-        button: "ok"
+        button: "OK"
       })
       localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
-      navigate('/chat', {replace: true})
+      navigate('/chat', { replace: true })
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -68,25 +67,27 @@ const Login = () => {
 
   return (
     <VStack spacing="10px">
-      <FormControl id="email" isRequired>
-        <FormLabel>Email Address</FormLabel>
+      <FormControl id="email" isRequired className="fontS ">
+        <FormLabel className="fontS sizeF">Email Address</FormLabel>
         <Input
+          className="sizeF"
           value={email}
           type="email"
           placeholder="Enter Your Email Address"
           onChange={(e) => setEmail(e.target.value)}
         />
       </FormControl>
-      <FormControl id="password" isRequired>
-        <FormLabel>Password</FormLabel>
+      <FormControl id="password" isRequired >
+        <FormLabel className="fontS sizeF">Password</FormLabel>
         <InputGroup size="md">
           <Input
+            className="sizeF"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             type={show ? "text" : "password"}
             placeholder="Enter password"
           />
-          <InputRightElement width="4.5rem">
+          <InputRightElement width="4.5rem" className="fontS sizeF">
             <Button h="1.75rem" size="sm" onClick={handleClick}>
               {show ? "Hide" : "Show"}
             </Button>
@@ -94,6 +95,7 @@ const Login = () => {
         </InputGroup>
       </FormControl>
       <Button
+        className="sizeF"
         colorScheme="blue"
         width="100%"
         style={{ marginTop: 15 }}
@@ -103,7 +105,7 @@ const Login = () => {
         Login
       </Button>
       <Button
-        variant="solid"
+        className="sizeF"
         colorScheme="red"
         width="100%"
         onClick={() => {
