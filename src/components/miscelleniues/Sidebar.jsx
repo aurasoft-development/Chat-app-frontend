@@ -206,7 +206,7 @@ const Sidebar = () => {
           </Menu>
           <Menu  >
             <MenuButton className='fontS sizeF ' as={Button}  rightIcon={<ChevronDownIcon />}>
-              <Avatar size={'sm'} cursor={'pointer'} name={user.name} src={user.pic} />
+              <Avatar size={'sm'} cursor={'pointer'} name={user.name} src={user.pic.url} />
               {/* {user.email} */}
             </MenuButton>
             <MenuList className='fontS sizeF'>

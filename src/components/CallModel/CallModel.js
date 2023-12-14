@@ -24,7 +24,7 @@ const CallModel = () => {
     return <div className='fontS' style={{ display: 'flex', justifyContent: "center", flexDirection: "column", gap: "40px" }}>
         <div>  <h1>Wellcome to audio page</h1> </div>
         <div style={{ border: "1px solid yellow", width: "300px", height: "300px", padding: "20px", display: 'flex', flexDirection: "column", justifyContent: 'center', gap: '40px' }}>
-            <div><Avatar size={'lg'} cursor={'pointer'} src={"user.pic"} /></div>
+            <div><Avatar size={'lg'} cursor={'pointer'} src={"user.pic.url"} /></div>
             <div><h2>{video.names}</h2></div>
             <div style={{ display: 'flex', gap: "10px" }}>
                 <div  ><Button style={{ background: "green" }} onClick={() => { setData(true); acceptCalls() }} >Accept Call</Button></div>

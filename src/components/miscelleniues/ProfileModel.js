@@ -7,7 +7,7 @@ const ProfileModel = ({ user, children }) => {
   return <div className='fontS sizeF'>
     {children ? (<span onClick={onOpen}>{children}</span>
     ) : (
-      <Avatar size={'md'} cursor={'pointer'} src={user.pic} onClick={onOpen} />
+      <Avatar size={'md'} cursor={'pointer'} src={user.pic.url} onClick={onOpen} />
     )}
     <Modal size={"lg"} isOpen={isOpen} onClose={onClose} isCentered >
       <ModalOverlay />
@@ -36,7 +36,7 @@ const ProfileModel = ({ user, children }) => {
             marginTop={"15px"}
             borderRadius={"full"}
             boxSize={"200px"}
-            src={user.pic}
+            src={user.pic.url}
             alt={user.name}
           />
           <Text

@@ -135,7 +135,8 @@ em-emoji-picker {
   font-family: 'Roboto', sans-serif;
   /* font-family: 'Zilla Slab', serif; */
 }
-.sizeF{
+
+.sizeF {
   font-size: 15px !important;
 }
 
@@ -147,9 +148,15 @@ em-emoji-picker {
 .button {
   cursor: pointer;
 }
-.swal-button:hover{
+
+.swal-button:hover {
   background-color: yellowgreen !important;
-} 
-.css-h2iqbi:hover{
+}
+
+.css-h2iqbi:hover {
   background-color: #ededed !important;
+}
+
+.d-flex {
+  display: flex;
 }
