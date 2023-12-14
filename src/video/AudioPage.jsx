@@ -1,5 +1,3 @@
-// import { ViewIcon } from '@chakra-ui/icons';
-import { Avatar } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import CallEndIcon from '@mui/icons-material/CallEnd';
 import MicIcon from '@mui/icons-material/Mic';
@@ -18,17 +16,20 @@ function AudioPage() {
     });
     const [micMuted, setMicMuted] = useState(true);
     const [avatar] = useState(img);
+    const [valumeAvatar, setValumeAvatar] = useState("");
     const [getMember, setGetMember] = useState("")
+    const [time, setTime] = useState(0);
+    const [isRunning, setIsRunning] = useState(false);
+    const [getMemberId, setGetMemberId] = useState("");
     const { user } = ChatState();
     const { id } = useParams()
     const history = useNavigate();
-
 
     const [roomId] = useState(id)
     let rtcClient;
     let rtmClient;
     let channel;
-    let getMemberId
+    // let getMemberId
     const token = null
     const appid = "d833589916f543f7a7f82c34a937fee3"
 
@@ -52,7 +53,7 @@ function AudioPage() {
         window.addEventListener('beforeunload', leaveRtmChannel)
 
         channel.on('MemberJoined', handleMemberJoined)
-        channel.on('MemberLeft', handleMemberLeft)
+        // channel.on('MemberLeft', handleMemberLeft)
     }
 
     const initRtc = async () => {
@@ -68,7 +69,32 @@ function AudioPage() {
         audioTracks.localAudioTrack.setMuted(micMuted)
         await rtcClient.publish(audioTracks.localAudioTrack);
 
-        // initVolumeIndicator()
+        initVolumeIndicator()
+    }
+
+    let initVolumeIndicator = async () => {
+
+        //1
+        AgoraRTC.setParameter('AUDIO_VOLUME_INDICATION_INTERVAL', 200);
+        rtcClient.enableAudioVolumeIndicator();
+
+        //2
+        rtcClient.on("volume-indicator", volumes => {
+            volumes.forEach((volume) => {
+                //3
+                try {
+                    let item = document.getElementsByClassName(`user-avatar-${volume.uid}`)[0]
+                    if (volume.level >= 50) {
+                        item.style.borderColor = '#00ff00'
+                    } else {
+                        item.style.borderColor = "#fff"
+                    }
+                } catch (error) {
+                    console.error(error)
+                }
+
+            });
+        })
     }
 
     let handleUserPublished = async (user, mediaType) => {
@@ -87,24 +113,29 @@ function AudioPage() {
     }
 
     let handleMemberJoined = async (MemberId) => {
-        alert("join member")
-        getMemberId = MemberId;
-        let { name } = await rtmClient.getUserAttributesByKeys(MemberId, ['name', 'userRtcUid', 'userAvatar'])
+        setGetMemberId(MemberId)
+        let { name, userRtcUid } = await rtmClient.getUserAttributesByKeys(MemberId, ['name', 'userRtcUid', 'userAvatar'])
         setGetMember(name)
+        setValumeAvatar(userRtcUid)
+        setIsRunning(true)
     }
 
-    let handleMemberLeft = async (getMemberId) => {
-        history("/chat");
+    let handleMemberLeft = async () => {
         setGetMember("")
-        document.getElementById(getMemberId).remove()
+        setGetMemberId("hyy")
+        // window.location.reload()
+        // document.getElementById(getMemberId).remove()
+        history("/chat");
 
     }
 
     let getChannelMembers = async () => {
         let members = await channel.getMembers()
         for (let i = 1; members.length > i; i++) {
-            const { name } = await rtmClient.getUserAttributesByKeys(members[1], ['name', 'userRtcUid', 'userAvatar'])
+            const { name, userRtcUid } = await rtmClient.getUserAttributesByKeys(members[1], ['name', 'userRtcUid', 'userAvatar'])
             setGetMember(name)
+            setValumeAvatar(userRtcUid)
+            setIsRunning(true)
         }
     }
 
@@ -140,6 +171,23 @@ function AudioPage() {
         // eslint-disable-next-line
     }, [])
 
+    useEffect(() => {
+        if (isRunning === true) {
+            setInterval(() => {
+                setTime((prevTime) => prevTime + 1);
+            }, 1000);
+        }
+    }, [isRunning]);
+
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+
+        return `${formattedMinutes}:${formattedSeconds}`;
+    };
     return (
         <>
 
@@ -147,9 +195,9 @@ function AudioPage() {
                 <div>
                     <div className='audio_body'>
                         <div className='audio_main_div'>
-                            <Avatar height={100} width={100} src={img} />
+                            <img id='vavatar' className={`user-avatar-${valumeAvatar}`} src={`${avatar}`} width={100} height={100} alt='demo' />
                             <span id={getMemberId}>{getMember}</span>
-                            <span>Ringing...</span>
+                            {getMember ? <span> {formatTime(time)}</span> : <span>Ringing...</span>}
                         </div>
                     </div>
 
