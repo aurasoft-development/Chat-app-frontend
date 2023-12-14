@@ -105,13 +105,6 @@ const Sidebar = () => {
     setSearch(value)
     if (!value) {
       setSearchResult([])
-      // toast({
-      //   title: "Please Enter Value",
-      //   status: "warning",
-      //   duration: 5000,
-      //   isClosable: true,
-      //   position: "top-left"
-      // })
       return;
     }
     try {
@@ -239,9 +232,6 @@ const Sidebar = () => {
                     value={search}
                     onChange={(e) => handleSearch(e.target.value)}
                   />
-                  {/* <Button onClick={handleSearch}
-                    border={'2px solid skyblue'}
-                  >Go</Button> */}
                 </Box>
                 {loading ? (
                   <ChatLoading />
@@ -264,7 +254,7 @@ const Sidebar = () => {
 
                       <div className="Mhover" style={{ display: "flex", borderBottom: '1px solid #ede5e5', gap: "10px", borderRadius: "5px", fontWeight: 'normal', padding: "10px", overflow: "scroll", paddingBottom: "0%" }} onClick={() => accessChat(value._id)} >
                         <div >
-                          <Avatar size={'md'} cursor={'pointer'} src={value.pic} />
+                          <Avatar size={'md'} cursor={'pointer'} src={value.pic.url} />
 
                         </div>
                         <div>
