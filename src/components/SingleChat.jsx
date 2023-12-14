@@ -30,13 +30,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const { user, selectedChat, setSelectedChat, setNotification, setVideo } = ChatState();
   const navigation = useNavigate();
 
-  const sendVideo = async () => {
+  const sendAudio = async () => {
     if (selectedChat && selectedChat.users.length > 0) {
       // eslint-disable-next-line
       selectedChat.users.map((e) => {
         if (user._id !== e._id) {
           const data = {
-            url: `/video/call/${user._id}`,
+            url: `/audio/call/${user._id}`,
             sender_id: user._id,
             receiver_id: e._id,
             names: user.names
@@ -279,8 +279,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 display: "flex",
                 justifyContent: "center"
               }}> <CallIcon onClick={() => {
-                sendVideo();
-                history(`/video/call/${user._id}`);
+                sendAudio();
+                history(`/audio/call/${user._id}`);
               }}
                 /> </div>
 
@@ -297,8 +297,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               }}>
                 <VideoCallIcon
                   onClick={() => {
-                    sendVideo();
-                    history(`/video/call/${user._id}`);
+                    sendAudio();
+                    history(`/audio/call/${user._id}`);
                   }}
                 />
               </div>

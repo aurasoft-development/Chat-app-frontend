@@ -15,7 +15,7 @@ function App() {
         <Route path="/" element={< Homepage />} />
         <Route path="/chat" element={<ChatPage />} />
         {/* <Route path="/video/call/:id" element={< MeetPage />} /> */}
-        <Route path="/video/call/:id" element={< AudioPage />} />
+        <Route path="/audio/call/:id" element={< AudioPage />} />
         <Route path="/call/model" element={< CallModel />} />
       </Routes>
     </div>

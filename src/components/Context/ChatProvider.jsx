@@ -13,7 +13,6 @@ const ChatProvider = ({ children }) => {
     const [video, setVideo] = useState([]);
     const [Audio, setAudio] = useState([]);
     const navigate = useNavigate();
-
     useEffect(() => {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'))
         setUser(userInfo)

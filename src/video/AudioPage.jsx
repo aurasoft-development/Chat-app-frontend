@@ -19,16 +19,18 @@ function AudioPage() {
     const [micMuted, setMicMuted] = useState(true);
     const [avatar] = useState(img);
     const [getMember, setGetMember] = useState("")
+    const [time, setTime] = useState(0);
+    const [isRunning, setIsRunning] = useState(false);
+    const [getMemberId, setGetMemberId] = useState("");
     const { user } = ChatState();
     const { id } = useParams()
     const history = useNavigate();
-
 
     const [roomId] = useState(id)
     let rtcClient;
     let rtmClient;
     let channel;
-    let getMemberId
+    // let getMemberId
     const token = null
     const appid = "d833589916f543f7a7f82c34a937fee3"
 
@@ -52,7 +54,7 @@ function AudioPage() {
         window.addEventListener('beforeunload', leaveRtmChannel)
 
         channel.on('MemberJoined', handleMemberJoined)
-        channel.on('MemberLeft', handleMemberLeft)
+        // channel.on('MemberLeft', handleMemberLeft)
     }
 
     const initRtc = async () => {
@@ -87,16 +89,18 @@ function AudioPage() {
     }
 
     let handleMemberJoined = async (MemberId) => {
-        alert("join member")
-        getMemberId = MemberId;
+        setGetMemberId(MemberId)
         let { name } = await rtmClient.getUserAttributesByKeys(MemberId, ['name', 'userRtcUid', 'userAvatar'])
         setGetMember(name)
+        setIsRunning(true)
     }
 
-    let handleMemberLeft = async (getMemberId) => {
-        history("/chat");
+    let handleMemberLeft = async () => {
         setGetMember("")
-        document.getElementById(getMemberId).remove()
+        setGetMemberId("hyy")
+        // window.location.reload()
+        // document.getElementById(getMemberId).remove()
+        history("/chat");
 
     }
 
@@ -105,6 +109,7 @@ function AudioPage() {
         for (let i = 1; members.length > i; i++) {
             const { name } = await rtmClient.getUserAttributesByKeys(members[1], ['name', 'userRtcUid', 'userAvatar'])
             setGetMember(name)
+            setIsRunning(true)
         }
     }
 
@@ -140,6 +145,23 @@ function AudioPage() {
         // eslint-disable-next-line
     }, [])
 
+    useEffect(() => {
+        if (isRunning === true) {
+            setInterval(() => {
+                setTime((prevTime) => prevTime + 1);
+            }, 1000);
+        }
+    }, [isRunning]);
+
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+
+        return `${formattedMinutes}:${formattedSeconds}`;
+    };
     return (
         <>
 
@@ -147,9 +169,10 @@ function AudioPage() {
                 <div>
                     <div className='audio_body'>
                         <div className='audio_main_div'>
-                            <Avatar height={100} width={100} src={img} />
+                            <img src={`${user?.pic}`} width={100} height={100} alt='demo' />
+                            <Avatar height={100} width={100} src={`${user?.pic}`} />
                             <span id={getMemberId}>{getMember}</span>
-                            <span>Ringing...</span>
+                            {getMember ? <span> {formatTime(time)}</span> : <span>Ringing...</span>}
                         </div>
                     </div>
 
