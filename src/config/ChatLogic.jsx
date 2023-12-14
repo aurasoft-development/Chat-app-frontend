@@ -45,7 +45,7 @@ export const getSenderFull = (loggedUser, users) => {
 };
 
 export const getSenderPic = (loggedUser, users) => {
-  return users[0]._id === loggedUser._id ? users[1].pic : users[0].pic;
+  return users[0]._id === loggedUser._id ? users[1].pic.url : users[0].pic.url;
 }
 
 export const getSenderId = (loggedUser, users) => {

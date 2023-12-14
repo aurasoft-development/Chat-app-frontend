@@ -196,7 +196,7 @@ function AudioPage() {
                 <div>
                     <div className='audio_body'>
                         <div className='audio_main_div'>
-                            <img id='vavatar' className={`user-avatar-${valumeAvatar}`} src={`${avatar}`} width={100} height={100} alt='demo' />
+                            <img id='vavatar' className={`user-avatar-${valumeAvatar}`} src={`${avatar}`} alt='demo' />
                             <span id={getMemberId}>{getMember}</span>
                             {getMember ? <span> {formatTime(time)}</span> : <span>Ringing...</span>}
                         </div>
