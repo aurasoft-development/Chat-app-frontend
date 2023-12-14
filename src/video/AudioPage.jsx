@@ -3,7 +3,7 @@ import CallEndIcon from '@mui/icons-material/CallEnd';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import '../assets/css/AudioModel.css'
-import img from '../assets/image/image.jpg'
+// import img from '../assets/image/image.jpg'
 import AgoraRTC from "agora-rtc-sdk-ng"
 import AgoraRTM from "agora-rtm-sdk"
 import { ChatState } from '../components/Context/ChatProvider';
@@ -15,7 +15,7 @@ function AudioPage() {
         remoteAudioTracks: {},
     });
     const [micMuted, setMicMuted] = useState(true);
-    const [avatar] = useState(img);
+    const [avatar] = useState("http://res.cloudinary.com/ddoap0pci/image/upload/v1702547568/hrerqqdfhd8xs0cn8mmy.jpg");
     const [valumeAvatar, setValumeAvatar] = useState("");
     const [getMember, setGetMember] = useState("")
     const [time, setTime] = useState(0);
@@ -24,6 +24,7 @@ function AudioPage() {
     const { user } = ChatState();
     const { id } = useParams()
     const history = useNavigate();
+    // const img = ""
 
     const [roomId] = useState(id)
     let rtcClient;
@@ -66,7 +67,7 @@ function AudioPage() {
 
         await rtcClient.join(appid, roomId, token, rtcUid)
         audioTracks.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-        audioTracks.localAudioTrack.setMuted(micMuted)
+        audioTracks.localAudioTrack.setMuted()
         await rtcClient.publish(audioTracks.localAudioTrack);
 
         initVolumeIndicator()

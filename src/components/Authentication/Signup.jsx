@@ -4,7 +4,8 @@ import { useToast } from '@chakra-ui/react'
 import axios from 'axios'
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
-
+import { Spinner } from '@chakra-ui/react'
+import { uploadImages } from '../../config/UploadImage';
 function Signup() {
     const [show, setShow] = useState()
     const [name, setName] = useState();
@@ -12,15 +13,48 @@ function Signup() {
     const [password, setPassword] = useState();
     const [confirmpassword, setConfirmpassword] = useState();
     const [pic, setPic] = useState();
+    const [picData, setPicData] = useState();
     // eslint-disable-next-line
     const [loading, setLoading] = useState(false)
     const [picLoading, setPicLoading] = useState(false);
     const toast = useToast();
     const navigate = useNavigate();
     const handleClick = () => setShow(!show);
+
+
+
+    // Function to upload captured images
+    const upload = async () => {
+        if (!pic) {
+            toast({
+                title: "Please Choose File.",
+                status: "warning",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom",
+            })
+            return;
+        } else {
+            setLoading(true);
+            const response = await uploadImages(pic)
+            if (response) {
+                setPicData(response.data)
+                toast({
+                    title: "File uploaded successfully",
+                    status: "success",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "bottom",
+                })
+                setLoading(false);
+                return;
+            }
+        }
+    }
+
     const submitHandler = async () => {
         setLoading(true);
-        if (!name || !email || !password || !pic) {
+        if (!name || !email || !password || !picData) {
             toast({
                 title: "Please Fill all the Feilds",
                 status: "warning",
@@ -42,20 +76,13 @@ function Signup() {
             return;
         }
         try {
-
-            const config = {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
+            const info = {
+                name: name,
+                email: email,
+                password: password,
+                pic: picData
             }
-
-            const formData = new FormData();
-            formData.append('name', name)
-            formData.append('email', email)
-            formData.append('password', password)
-            formData.append('pic', pic)
-            const { data } = await axios.post('/api/multer/upload', formData,
-                config
+            const { data } = await axios.post('/api/user/register', info
             );
             swal({
                 title: "Registration Successful",
@@ -69,7 +96,6 @@ function Signup() {
         } catch (error) {
             toast({
                 title: "Error Occured",
-                // description: error.response.data.message,
                 status: "error",
                 duration: 5000,
                 isClosable: true,
@@ -106,7 +132,7 @@ function Signup() {
         </FormControl>
         <FormControl id="password" isRequired className="fontS">
             <FormLabel className='fontS sizeF'>Confirm Password</FormLabel>
-            <InputGroup>password
+            <InputGroup>
                 <Input
                     className='fontS sizeF'
                     type={show ? "text" : "password"}
@@ -119,15 +145,22 @@ function Signup() {
                 </InputRightElement>
             </InputGroup>
         </FormControl>
-        <FormControl id="pic" isRequired className="fontS">
+        <FormControl id="pic" isRequired className="fontS ">
             <FormLabel className='fontS sizeF'>Upload Your Picture</FormLabel>
-            <Input
-                className='fontS sizeF'
-                type="file"
-                p={1.5}
-                fontSize={'13px'}
-                accept='image/*'
-                onChange={(e) => setPic(e.target.files[0])} />
+            <InputGroup>
+                <Input
+                    className='fontS sizeF'
+                    type="file"
+                    p={1.5}
+                    fontSize={'13px'}
+                    accept='image/*'
+                    onChange={(e) => setPic(e.target.files[0])} />
+                <InputRightElement width="4.5rem">
+                    {loading === true ? <Spinner /> : <Button className='fontS' h="1.75rem" size="sm" color={"black"} onClick={() => upload()}>
+                        upload
+                    </Button>}
+                </InputRightElement>
+            </InputGroup>
         </FormControl>
         <Button
             className='fontS sizeF'
