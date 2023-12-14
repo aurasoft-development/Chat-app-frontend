@@ -1,14 +1,15 @@
 .Audio_model_footer {
     display: flex;
-    justify-content: center ;
+    justify-content: center;
     gap: 30px;
 }
 
-.main_model_audio{
-display: flex;
-justify-content: center;
-align-items: center;
+.main_model_audio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 .footer_call_end {
     background: red;
     width: 50px;
@@ -45,4 +46,11 @@ align-items: center;
 
 .css-pv22qu {
     background: rgb(237, 237, 237) !important;
+}
+
+#vavatar {
+    border-radius: 50%;
+    border-color: green;
+    border: 2px solid;
+    opacity: 1;
 }

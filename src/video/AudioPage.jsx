@@ -1,5 +1,3 @@
-// import { ViewIcon } from '@chakra-ui/icons';
-import { Avatar } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import CallEndIcon from '@mui/icons-material/CallEnd';
 import MicIcon from '@mui/icons-material/Mic';
@@ -18,6 +16,7 @@ function AudioPage() {
     });
     const [micMuted, setMicMuted] = useState(true);
     const [avatar] = useState(img);
+    const [valumeAvatar, setValumeAvatar] = useState("");
     const [getMember, setGetMember] = useState("")
     const [time, setTime] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
@@ -70,7 +69,32 @@ function AudioPage() {
         audioTracks.localAudioTrack.setMuted(micMuted)
         await rtcClient.publish(audioTracks.localAudioTrack);
 
-        // initVolumeIndicator()
+        initVolumeIndicator()
+    }
+
+    let initVolumeIndicator = async () => {
+
+        //1
+        AgoraRTC.setParameter('AUDIO_VOLUME_INDICATION_INTERVAL', 200);
+        rtcClient.enableAudioVolumeIndicator();
+
+        //2
+        rtcClient.on("volume-indicator", volumes => {
+            volumes.forEach((volume) => {
+                //3
+                try {
+                    let item = document.getElementsByClassName(`user-avatar-${volume.uid}`)[0]
+                    if (volume.level >= 50) {
+                        item.style.borderColor = '#00ff00'
+                    } else {
+                        item.style.borderColor = "#fff"
+                    }
+                } catch (error) {
+                    console.error(error)
+                }
+
+            });
+        })
     }
 
     let handleUserPublished = async (user, mediaType) => {
@@ -90,8 +114,9 @@ function AudioPage() {
 
     let handleMemberJoined = async (MemberId) => {
         setGetMemberId(MemberId)
-        let { name } = await rtmClient.getUserAttributesByKeys(MemberId, ['name', 'userRtcUid', 'userAvatar'])
+        let { name, userRtcUid } = await rtmClient.getUserAttributesByKeys(MemberId, ['name', 'userRtcUid', 'userAvatar'])
         setGetMember(name)
+        setValumeAvatar(userRtcUid)
         setIsRunning(true)
     }
 
@@ -107,8 +132,9 @@ function AudioPage() {
     let getChannelMembers = async () => {
         let members = await channel.getMembers()
         for (let i = 1; members.length > i; i++) {
-            const { name } = await rtmClient.getUserAttributesByKeys(members[1], ['name', 'userRtcUid', 'userAvatar'])
+            const { name, userRtcUid } = await rtmClient.getUserAttributesByKeys(members[1], ['name', 'userRtcUid', 'userAvatar'])
             setGetMember(name)
+            setValumeAvatar(userRtcUid)
             setIsRunning(true)
         }
     }
@@ -169,8 +195,7 @@ function AudioPage() {
                 <div>
                     <div className='audio_body'>
                         <div className='audio_main_div'>
-                            <img src={`${user?.pic}`} width={100} height={100} alt='demo' />
-                            <Avatar height={100} width={100} src={`${user?.pic}`} />
+                            <img id='vavatar' className={`user-avatar-${valumeAvatar}`} src={`${avatar}`} width={100} height={100} alt='demo' />
                             <span id={getMemberId}>{getMember}</span>
                             {getMember ? <span> {formatTime(time)}</span> : <span>Ringing...</span>}
                         </div>
