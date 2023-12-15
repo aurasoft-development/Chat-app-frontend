@@ -1,25 +1,13 @@
 import "./App.css";
-// import Homepage from "./Pages/Homepage";
-import { Route, Routes } from "react-router-dom";
-import ChatPage from "./Pages/ChatPage";
-import Homepage from './Pages/Homepage';
-// import MeetPage from "./video/MeetPage";
-import CallModel from "./components/CallModel/CallModel";
-import AudioPage from "./video/AudioPage";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import AllRoutes from "./allroutes/AllRoutes";
 
 function App() {
   return (
     <div className="App">
-
-      <Routes>
-        <Route path="/" element={< Homepage />} />
-        <Route path="/chat" element={<ChatPage />} />
-        {/* <Route path="/video/call/:id" element={< MeetPage />} /> */}
-        <Route path="/audio/call/:id" element={< AudioPage />} />
-        <Route path="/call/model" element={< CallModel />} />
-      </Routes>
+      {/* AllRoutes component for managing application routes */}
+      <AllRoutes />
 
       {/* ToastContainer for displaying notifications */}
       <ToastContainer
