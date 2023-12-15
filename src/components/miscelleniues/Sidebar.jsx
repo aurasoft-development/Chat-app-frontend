@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Toast, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
+import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react'
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons"
 import { ChatState } from '../Context/ChatProvider';
@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ChatLoading from './ChatLoading';
 import UserListItem from '../UserAvatar/UserListItem';
+import { toast } from 'react-toastify';
 // import GetUserModel from './GetUserModel';
 
 const Sidebar = () => {
@@ -34,14 +35,7 @@ const Sidebar = () => {
       );
       setNoti(data);
     } catch (error) {
-      Toast({
-        title: "Error Occured!",
-        description: "Failed to Load the Messages",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      toast.error("Error Occured!")
     }
   };
   const allUser = async () => {
@@ -56,14 +50,7 @@ const Sidebar = () => {
       const userData = await axios.get(`/api/user/getuser/user`, config)
       seGetUser(userData.data)
     } catch (error) {
-      Toast({
-        title: "Error Occured!",
-        description: "User Not Found",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      toast.error("Error Occured!")
     }
 
   }
@@ -86,21 +73,13 @@ const Sidebar = () => {
       );
       setData(data)
     } catch (error) {
-      Toast({
-        title: "Error Occured!",
-        description: "Failed to Load the Messages",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      toast.error("Error Occured!")
     }
   }
   const logoutHandler = () => {
     localStorage.removeItem("userInfo")
     navigate('/', { replace: true })
   }
-  const toast = useToast();
   const handleSearch = async (value) => {
     setSearch(value)
     if (!value) {
@@ -118,14 +97,7 @@ const Sidebar = () => {
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
-      toast({
-        title: "Error Occured!",
-        description: 'Failed to Load the Search Results',
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom-left"
-      })
+      toast.error("Error Occured!")
     }
   }
   const accessChat = async (userId) => {
@@ -144,14 +116,7 @@ const Sidebar = () => {
       onClose();
 
     } catch (error) {
-      toast({
-        title: "Error fetching the chat",
-        description: error.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom-left"
-      })
+      toast.error("Error fetching the chat")
     }
   }
   return (
@@ -198,7 +163,7 @@ const Sidebar = () => {
             </MenuList>
           </Menu>
           <Menu  >
-            <MenuButton className='fontS sizeF ' as={Button}  rightIcon={<ChevronDownIcon />}>
+            <MenuButton className='fontS sizeF ' as={Button} rightIcon={<ChevronDownIcon />}>
               <Avatar size={'sm'} cursor={'pointer'} name={user.name} src={user.pic.url} />
               {/* {user.email} */}
             </MenuButton>

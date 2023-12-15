@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from '../Context/ChatProvider';
-import { Avatar, Toast, useToast } from '@chakra-ui/react';
+import { Avatar} from '@chakra-ui/react';
 import { Box, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import axios from 'axios';
@@ -8,6 +8,7 @@ import { AddIcon } from '@chakra-ui/icons';
 import ChatLoading from './ChatLoading';
 import { getSender, getSenderId, getSenderPic } from '../../config/ChatLogic';
 import GroupChatModel from './GroupChatModel';
+import { toast } from 'react-toastify';
 
 const MyChat = () => {
   const [loggedUser, setLoggedUser] = useState();
@@ -16,7 +17,6 @@ const MyChat = () => {
   // eslint-disable-next-line
   const [data, setData] = useState("");
   const { selectedChat, setSelectedChat, user, chats, setChats, noti } = ChatState();
-  const toast = useToast();
 
 
   const fetchChats = async () => {
@@ -31,14 +31,7 @@ const MyChat = () => {
       setChats(data)
 
     } catch (error) {
-      toast({
-        title: "Error Occured",
-        description: 'Failed to load the chats',
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom-left"
-      })
+      toast.error("Error Occured")
     }
   }
 
@@ -58,14 +51,7 @@ const MyChat = () => {
       setData(data)
 
     } catch (error) {
-      Toast({
-        title: "Error Occured!",
-        description: "Failed to Load the Messages",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      toast.error("Error Occured")
     }
   }
 

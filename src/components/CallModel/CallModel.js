@@ -14,13 +14,6 @@ const CallModel = () => {
     const deleteNotification = async () => {
         history('/chat')
     }
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         deleteNotification()
-    //     }, 10000)
-    //     // eslint-disable-next-line
-    // }, [])
-    console.log("video---->", video);
     return <div className='fontS' style={{ display: 'flex', justifyContent: "center", flexDirection: "column", gap: "40px" }}>
         <div>  <h1>Wellcome to audio page</h1> </div>
         <div style={{ border: "1px solid yellow", width: "300px", height: "300px", padding: "20px", display: 'flex', flexDirection: "column", justifyContent: 'center', gap: '40px' }}>

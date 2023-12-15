@@ -1,11 +1,11 @@
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import { useToast } from '@chakra-ui/react'
 import axios from 'axios'
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from '@chakra-ui/react'
 import { uploadImages } from '../../config/UploadImage';
+import { toast } from 'react-toastify';
 function Signup() {
     const [show, setShow] = useState()
     const [name, setName] = useState();
@@ -17,7 +17,6 @@ function Signup() {
     // eslint-disable-next-line
     const [loading, setLoading] = useState(false)
     const [picLoading, setPicLoading] = useState(false);
-    const toast = useToast();
     const navigate = useNavigate();
     const handleClick = () => setShow(!show);
 
@@ -26,26 +25,14 @@ function Signup() {
     // Function to upload captured images
     const upload = async () => {
         if (!pic) {
-            toast({
-                title: "Please Choose File.",
-                status: "warning",
-                duration: 5000,
-                isClosable: true,
-                position: "bottom",
-            })
+            toast.warn("Please Choose File.")
             return;
         } else {
             setLoading(true);
             const response = await uploadImages(pic)
             if (response) {
                 setPicData(response.data)
-                toast({
-                    title: "File uploaded successfully",
-                    status: "success",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "bottom",
-                })
+                toast.success("File uploaded successfully")
                 setLoading(false);
                 return;
             }
@@ -55,24 +42,12 @@ function Signup() {
     const submitHandler = async () => {
         setLoading(true);
         if (!name || !email || !password || !picData) {
-            toast({
-                title: "Please Fill all the Feilds",
-                status: "warning",
-                duration: 5000,
-                isClosable: true,
-                position: "bottom",
-            })
+            toast.warn("Please Fill all the Feilds")
             setLoading(false);
             return;
         }
         if (password !== confirmpassword) {
-            toast({
-                title: "Password Do Not Match",
-                status: "warning",
-                duration: 5000,
-                isClosable: true,
-                position: "bottom",
-            })
+            toast.warn("Password Do Not Match")
             return;
         }
         try {
@@ -94,13 +69,7 @@ function Signup() {
             setLoading(false);
             navigate('/chat', { replace: true });
         } catch (error) {
-            toast({
-                title: "Error Occured",
-                status: "error",
-                duration: 5000,
-                isClosable: true,
-                position: "bottom",
-            })
+            toast.error("Error Occured")
             setPicLoading(false)
         }
     }

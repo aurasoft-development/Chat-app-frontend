@@ -4,14 +4,13 @@ import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { VStack } from "@chakra-ui/layout";
 import { useState } from "react";
 import axios from "axios";
-import { useToast } from "@chakra-ui/react";
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
+import { toast } from 'react-toastify'
 
 const Login = () => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
-  const toast = useToast();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
@@ -21,13 +20,7 @@ const Login = () => {
   const submitHandler = async () => {
     setLoading(true);
     if (!email || !password) {
-      toast({
-        title: "Please Fill all the Feilds",
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      toast.warn("Please Fill all the Feilds")
       setLoading(false);
       return;
     }
@@ -53,15 +46,9 @@ const Login = () => {
       setLoading(false);
       navigate('/chat', { replace: true })
     } catch (error) {
-      toast({
-        title: "Error Occured!",
-        description: error.response.data.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      toast.error("Error Occured!")
       setLoading(false);
+      return;
     }
   };
 
