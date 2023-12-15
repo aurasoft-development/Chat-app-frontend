@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from './Context/ChatProvider'
-import { Box, Button, FormControl, IconButton, Input, InputGroup, InputLeftElement, InputRightElement, Spinner, Text, useToast } from '@chakra-ui/react';
+import { Box, Button, FormControl, IconButton, Input, InputGroup, InputLeftElement, InputRightElement, Spinner, Text } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { getSender, getSenderFull } from '../config/ChatLogic';
 import ProfileModel from './miscelleniues/ProfileModel';
@@ -15,6 +15,7 @@ import data from '@emoji-mart/data'
 import SendIcon from '@mui/icons-material/Send';
 import { useNavigate } from "react-router-dom";
 import Picker from '@emoji-mart/react'
+import { toast } from 'react-toastify';
 const ENDPOINT = "http://127.0.0.1:5000";
 var socket, selectedChatCompare;
 
@@ -25,7 +26,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [isTyping, setIsTyping] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const toast = useToast();
   const [showEmojis, setShowEmojis] = useState(false);
   const { user, selectedChat, setSelectedChat, setNotification, setVideo } = ChatState();
   const navigation = useNavigate();
@@ -67,14 +67,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
       socket.emit("join chat", selectedChat._id);
     } catch (error) {
-      toast({
-        title: "Error Occured!",
-        description: "Failed to Load the Messages",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      toast.error("Error Occured!")
     }
   };
   useEffect(() => {
@@ -127,14 +120,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       );
       setNotification(data);
     } catch (error) {
-      toast({
-        title: "Error Occuredd!",
-        description: "Failed to send the Message",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      toast.error("Error Occured!")
     }
   }
   useEffect(() => {
@@ -183,14 +169,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {
-        toast({
-          title: "Error Occuredd!",
-          description: "Failed to send the Message",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-          position: "bottom",
-        });
+        toast.error("Error Occured!")
       }
     }
   };
