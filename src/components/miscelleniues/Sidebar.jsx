@@ -145,7 +145,6 @@ const Sidebar = () => {
             </MenuButton>
 
             <MenuList >
-              {/* {!noti && !noti.data.length > 0 && "No New Messages"} */}
 
               {noti && noti.data && noti.data.length > 0 && noti.data.map((noti) => (
                 <MenuItem
@@ -165,7 +164,6 @@ const Sidebar = () => {
           <Menu  >
             <MenuButton className='fontS sizeF ' as={Button} rightIcon={<ChevronDownIcon />}>
               <Avatar size={'sm'} cursor={'pointer'} name={user.name} src={user.pic.url} />
-              {/* {user.email} */}
             </MenuButton>
             <MenuList className='fontS sizeF'>
               <ProfileModel user={user}>

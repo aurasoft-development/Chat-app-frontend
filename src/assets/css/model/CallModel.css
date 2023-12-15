@@ -1,0 +1,22 @@
+.call_container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.call_div_main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+    border: 1px solid yellow;
+    width: 300px;
+    height: 300px;
+    padding: 20px;
+}
+
+.call_btn_main {
+    display: flex;
+    gap: 10px;
+}

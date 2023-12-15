@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from '../Context/ChatProvider';
-import { Avatar} from '@chakra-ui/react';
+import { Avatar } from '@chakra-ui/react';
 import { Box, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import axios from 'axios';
@@ -9,6 +9,7 @@ import ChatLoading from './ChatLoading';
 import { getSender, getSenderId, getSenderPic } from '../../config/ChatLogic';
 import GroupChatModel from './GroupChatModel';
 import { toast } from 'react-toastify';
+import '../../assets/css/miscelleniues/MyChat.css'
 
 const MyChat = () => {
   const [loggedUser, setLoggedUser] = useState();
@@ -63,26 +64,13 @@ const MyChat = () => {
   return (
     loggedUser
       ?
-      <Box
+      <Box className='mychat_box_container'
         display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
-        flexDir="column"
-        alignItems="center"
-        p={3}
-        bg="white"
         w={{ base: "100%", md: "31%" }}
-        borderRadius="lg"
-        borderWidth="1px"
       >
         <Box
-          className='fontS sizeF'
-          pb={3}
-          px={3}
+          className='fontS sizeF mychat_box_sec'
           fontSize={{ base: "30px", md: "20px" }}
-          display="flex"
-          w="100%"
-          justifyContent="space-between"
-          alignItems="center"
-          fontWeight={"600"}
         >
           My Chats
           <GroupChatModel>
@@ -125,7 +113,7 @@ const MyChat = () => {
                     textAlign={"left"}
                     key={chat._id}
                   >
-                    <Text className='fontS sizeF'  fontWeight={"600"} >
+                    <Text className='fontS sizeF' fontWeight={"600"} >
                       <div className='innerDiv' >
                         <div style={{ display: "flex", gap: "20px" }}>
                           <div>
@@ -143,7 +131,7 @@ const MyChat = () => {
                             </div>
                             <div>
                               {chat.latestMessage && (
-                                <Text fontSize="12px"  fontWeight={"600"}>
+                                <Text fontSize="12px" fontWeight={"600"}>
                                   {/* <b>{chat.latestMessage.sender.name} : </b> */}
                                   {chat.latestMessage.content.length > 50
                                     ? chat.latestMessage.content.substring(0, 51) + "..."

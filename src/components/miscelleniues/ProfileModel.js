@@ -7,14 +7,13 @@ const ProfileModel = ({ user, children }) => {
   return <div className='fontS sizeF'>
     {children ? (<span onClick={onOpen}>{children}</span>
     ) : (
-      <Avatar size={'md'} cursor={'pointer'} src={user.pic.url} onClick={onOpen} />
+      <Avatar size={'md'} cursor={'pointer'} src={user.pic?.url} onClick={onOpen} />
     )}
     <Modal size={"lg"} isOpen={isOpen} onClose={onClose} isCentered >
       <ModalOverlay />
       <ModalContent h="410px">
         <ModalHeader
           className='fontS sizeF'
-          // fontSize={'20px'}
           display={'flex'}
           justifyContent={"center"}
           backgroundColor={"#258c60"}
@@ -36,7 +35,7 @@ const ProfileModel = ({ user, children }) => {
             marginTop={"15px"}
             borderRadius={"full"}
             boxSize={"200px"}
-            src={user.pic.url}
+            src={user.pic?.url}
             alt={user.name}
           />
           <Text
