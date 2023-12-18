@@ -14,7 +14,7 @@ function AudioPage() {
         remoteAudioTracks: {},
     });
     const [micMuted, setMicMuted] = useState(true);
-    const [avatar] = useState("http://res.cloudinary.com/ddoap0pci/image/upload/v1702547568/hrerqqdfhd8xs0cn8mmy.jpg");
+    const [avatar, setAvatar] = useState("");
     const [valumeAvatar, setValumeAvatar] = useState("");
     const [getMember, setGetMember] = useState("")
     const [time, setTime] = useState(0);
@@ -31,7 +31,7 @@ function AudioPage() {
     let channel;
     // let getMemberId
     const token = null
-    const appid = "d833589916f543f7a7f82c34a937fee3"
+    const appid = process.env.REACT_APP_APPID;
 
     const rtcUid = Math.floor(Math.random() * 2032)
     const rtmUid = String(Math.floor(Math.random() * 2032))
@@ -44,7 +44,7 @@ function AudioPage() {
         channel = rtmClient.createChannel(roomId)
         await channel.join()
 
-        await rtmClient.addOrUpdateLocalUserAttributes({ 'name': user?.name, 'userRtcUid': rtcUid.toString(), 'userAvatar': avatar })
+        await rtmClient.addOrUpdateLocalUserAttributes({ 'name': user?.name, 'userRtcUid': rtcUid.toString(), 'userAvatar': user?.pic?.url })
 
         // console.log();
 
@@ -114,8 +114,9 @@ function AudioPage() {
 
     let handleMemberJoined = async (MemberId) => {
         setGetMemberId(MemberId)
-        let { name, userRtcUid } = await rtmClient.getUserAttributesByKeys(MemberId, ['name', 'userRtcUid', 'userAvatar'])
+        let { name, userRtcUid, userAvatar } = await rtmClient.getUserAttributesByKeys(MemberId, ['name', 'userRtcUid', 'userAvatar'])
         setGetMember(name)
+        setAvatar(userAvatar)
         setValumeAvatar(userRtcUid)
         setIsRunning(true)
     }
@@ -132,8 +133,9 @@ function AudioPage() {
     let getChannelMembers = async () => {
         let members = await channel.getMembers()
         for (let i = 1; members.length > i; i++) {
-            const { name, userRtcUid } = await rtmClient.getUserAttributesByKeys(members[1], ['name', 'userRtcUid', 'userAvatar'])
+            const { name, userRtcUid, userAvatar } = await rtmClient.getUserAttributesByKeys(members[1], ['name', 'userRtcUid', 'userAvatar'])
             setGetMember(name)
+            setAvatar(userAvatar)
             setValumeAvatar(userRtcUid)
             setIsRunning(true)
         }

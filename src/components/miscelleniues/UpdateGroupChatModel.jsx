@@ -1,4 +1,3 @@
-import { ViewIcon } from "@chakra-ui/icons";
 import {
   Modal,
   ModalOverlay,
@@ -12,8 +11,8 @@ import {
   FormControl,
   Input,
   Box,
-  IconButton,
   Spinner,
+  Avatar,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
@@ -157,8 +156,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
 
   return (
     <>
-      <IconButton d={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} />
-
+      <Avatar size={'md'} cursor={'pointer'} src={user.pic?.url} onClick={onOpen} />
       <Modal onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
         <ModalContent className="fontS">
@@ -184,13 +182,15 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
               <Input
                 placeholder="Chat Name"
                 mb={3}
+                borderColor={"blackAlpha.300"}
                 value={groupChatName}
                 onChange={(e) => setGroupChatName(e.target.value)}
               />
               <Button
                 variant="solid"
-                colorScheme="teal"
+                colorScheme="blue"
                 ml={1}
+                mb={3}
                 isLoading={renameloading}
                 onClick={handleRename}
               >
@@ -201,6 +201,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
               <Input
                 placeholder="Add User to group"
                 mb={1}
+                borderColor={"blackAlpha.300"}
                 onChange={(e) => handleSearch(e.target.value)}
               />
             </FormControl>
@@ -217,8 +218,8 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
               ))
             )}
           </ModalBody>
-          <ModalFooter>
-            <Button onClick={() => handleRemove(user)} colorScheme="red">
+          <ModalFooter className="update-group">
+            <Button onClick={() => handleRemove(user)} colorScheme="blue">
               Leave Group
             </Button>
           </ModalFooter>
