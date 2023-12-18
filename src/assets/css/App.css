@@ -1,3 +1,10 @@
+:root {
+  --model_header_footer_background: #258c60;
+  --color_white: white;
+  --background_white: white;
+  --header_background_color: rgb(237, 237, 237);
+}
+
 .App {
   text-align: center;
   min-height: 100vh;

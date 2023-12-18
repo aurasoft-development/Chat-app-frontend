@@ -5,6 +5,7 @@ import axios from 'axios'
 import UserListItem from '../UserAvatar/UserListItem'
 import UserBadgeItem from '../UserAvatar/UserBadgeItem'
 import { toast } from 'react-toastify'
+import '../../assets/css/miscelleniues/GroupChatModel.css'
 
 const GroupChatModel = ({ children }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -80,22 +81,17 @@ const GroupChatModel = ({ children }) => {
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader
-                        className='fontS sizeF'
-                        display={"flex"}
-                        justifyContent={"center"}
-                        bg={'#258c60'}
-                        color={'white'}
-                        p={'20px !important'}
+                        className='fontS sizeF groupchat_model_header'
                     >Create Group Chat</ModalHeader>
                     <ModalCloseButton />
-                    <ModalBody display={"flex"} flexDir={"column"} alignItems={"center"} bg={'white'}>
+                    <ModalBody className='groupchat_model_body'>
                         <FormControl>
                             <Input placeholder='ChatName' mb={3} onChange={(e) => setGroupChatName(e.target.value)} />
                         </FormControl>
                         <FormControl>
                             <Input placeholder='Add Users eg: John, rahul, jane' mb={1} onChange={(e) => handleSearch(e.target.value)} />
                         </FormControl>
-                        <Box w={'100%'} display={'flex'} flexWrap={'wrap'}>
+                        <Box className='groupchat_box'>
                             {selectedUsers.map(u => (
                                 <UserBadgeItem key={user._id} user={u}
                                     handleFunction={() => handleDelete(u)}
@@ -111,7 +107,7 @@ const GroupChatModel = ({ children }) => {
                         )}
                     </ModalBody>
 
-                    <ModalFooter bg={'#258c60'} display={'flex'} justifyContent={'space-evenly'}>
+                    <ModalFooter className='groupchat_model_footer'>
                         <Button colorScheme='blue' onClick={handleSubmit}>
                             Create Chat
                         </Button>

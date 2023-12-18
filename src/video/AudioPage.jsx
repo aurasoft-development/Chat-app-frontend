@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import CallEndIcon from '@mui/icons-material/CallEnd';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
-import '../assets/css/AudioModel.css'
-// import img from '../assets/image/image.jpg'
+import '../assets/css/model/AudioModel.css'
 import AgoraRTC from "agora-rtc-sdk-ng"
 import AgoraRTM from "agora-rtm-sdk"
 import { ChatState } from '../components/Context/ChatProvider';

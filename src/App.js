@@ -1,11 +1,11 @@
-import "./App.css";
+import "./assets/css/App.css"
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import AllRoutes from "./allroutes/AllRoutes";
-
 function App() {
   return (
     <div className="App">
+     
       {/* AllRoutes component for managing application routes */}
       <AllRoutes />
 

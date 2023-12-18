@@ -4,14 +4,15 @@ import MyChat from "../components/miscelleniues/MyChat";
 import ChatBox from "../components/miscelleniues/ChatBox";
 import Sidebar from "../components/miscelleniues/Sidebar";
 import { useState } from "react";
+import '../assets/css/pages/ChatPage.css'
 const ChatPage = () => {
   const { user } = ChatState();
   const [fetchAgain, setFetchAgain] = useState(false)
   return (
 
-    <div style={{ width: "100%" }} >
+    <div className="chat-page-container" >
        {user && <Sidebar />}
-      <Box style={{ display: "flex", justifyContent: "space-between", width: "100%", height: "91.5vh", padding: "10px" }}>
+      <Box className="chat-page-box">
         {user && <MyChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />}
         {user && <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />}
       </Box>

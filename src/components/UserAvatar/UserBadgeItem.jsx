@@ -1,19 +1,13 @@
 import { CloseIcon } from "@chakra-ui/icons";
 import { Badge } from "@chakra-ui/layout";
 import React from 'react'
+import '../../assets/css/UserAvatar/UserBadgeItem.css'
 
 const UserBadgeItem = ({ user, handleFunction, admin }) => {
   return (
     <Badge
-      px={2}
-      py={1}
-      borderRadius="lg"
-      m={1}
-      mb={2}
+      className="userbadge_item_container"
       variant="solid"
-      fontSize={12}
-      colorScheme="purple"
-      cursor="pointer"
       onClick={handleFunction}
     >
       {user.name}

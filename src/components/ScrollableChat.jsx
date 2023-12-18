@@ -3,17 +3,17 @@ import { Tooltip } from "@chakra-ui/tooltip";
 import ScrollableFeed from "react-scrollable-feed";
 import { ChatState } from './Context/ChatProvider'
 import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser, } from "../config/ChatLogic";
+import '../assets/css/ScrollableChat.css'
 
 
 const ScrollableChat = ({ messages }) => {
     const { user } = ChatState();
-  
+
     return (
-        <ScrollableFeed> 
+        <ScrollableFeed>
             {messages &&
                 messages.map((m, i) => (
-                    <div className="fontS fontS" style={{ display: "flex" }} key={m._id}>
-                        {/* {m.time <= tt ? ("12:00PM") : ("")} */}
+                    <div className="fontS fontS sc_div_main" key={m._id}>
                         {(isSameSender(messages, m, i, user._id) ||
                             isLastMessage(messages, i, user._id)) && (
                                 <Tooltip label={m.sender.name} placement="bottom-start" hasArrow>
@@ -28,6 +28,7 @@ const ScrollableChat = ({ messages }) => {
                                 </Tooltip>
                             )}
                         <span
+                            className="scrollablechat_span"
                             style={{
                                 backgroundColor: `${m.sender._id === user._id ? "#258c60" : "#ededed"
                                     }`,
@@ -35,17 +36,12 @@ const ScrollableChat = ({ messages }) => {
                                     }`,
                                 marginLeft: isSameSenderMargin(messages, m, i, user._id),
                                 marginTop: isSameUser(messages, m, i, user._id) ? 3 : 10,
-                                borderRadius: "20px",
-                                padding: "5px 20px",
-                                maxWidth: "75%",
-                                fontSize: "15px",
-                                fontWeight: "bold",
                             }}
                         >
-                           
-                            <div style={{ display: "flex", gap: "5px", alignItems: "end" }}>
+
+                            <div className="scrollablechat_div">
                                 <div>{m.content}</div>
-                                <div style={{ fontSize: "10px" }} >{m.time}</div>
+                                <div className="sc_div">{m.time}</div>
                             </div>
                         </span>
                     </div>

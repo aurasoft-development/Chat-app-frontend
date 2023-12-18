@@ -1,0 +1,30 @@
+.home-container {
+    background-color: var(--background_white);
+    margin: 30px 0px;
+    border-radius: 8px;
+}
+
+.home-box {
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+    width: 100%;
+    margin: 40px 0 15px 0;
+    border-radius: 8px;
+    border-width: 1px;
+}
+
+.home-tax {
+    font-size: 25px;
+    color: black;
+    font-weight: 600;
+}
+
+.home-box1 {
+    width: 100%;
+    padding: 16px;
+    border-radius: 8px;
+    color: black;
+    border-width: 1px;
+    margin-bottom: 20px;
+}

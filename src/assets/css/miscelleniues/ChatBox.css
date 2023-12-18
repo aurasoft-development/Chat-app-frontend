@@ -1,0 +1,20 @@
+.messages {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.chakra-modal__body {
+  padding: 0px !important
+}
+
+
+.box_container {
+  align-items: center;
+  flex-direction: column;
+  padding: 12px;
+  background-color: white;
+  border-width: 1px;
+  border-radius: 8px;
+}
