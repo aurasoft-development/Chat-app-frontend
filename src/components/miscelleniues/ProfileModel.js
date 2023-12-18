@@ -1,6 +1,7 @@
 // import { ViewIcon } from '@chakra-ui/icons';
 import { Avatar, Button, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
+import "../../assets/css/model/ProfileModel.css"
 
 const ProfileModel = ({ user, children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -13,23 +14,10 @@ const ProfileModel = ({ user, children }) => {
       <ModalOverlay />
       <ModalContent h="410px">
         <ModalHeader
-          className='fontS sizeF'
-          display={'flex'}
-          justifyContent={"center"}
-          backgroundColor={"#258c60"}
-          color={'white'}
-          p={'20px !important'}
+          className='fontS sizeF profile_model_header'
         >{user.name}</ModalHeader>
         <ModalBody
-          className='sizeF'
-          display={"flex"}
-          flexDir={"column"}
-          alignItems={"center"}
-          justifyContent={"space-between"}
-          backgroundColor={"white"}
-          // fontSize={'20px'}
-          fontWeight={"600"}
-
+          className='sizeF profile_model_body'
         >
           <Image
             marginTop={"15px"}
@@ -46,7 +34,7 @@ const ProfileModel = ({ user, children }) => {
           </Text>
         </ModalBody>
 
-        <ModalFooter className='sizeF' backgroundColor={"#258c60"} display={'flex'} justifyContent={'space-evenly'}>
+        <ModalFooter className='sizeF profile_model_footer'>
           <Button colorScheme='blue' onClick={onClose}>
             Close
           </Button>

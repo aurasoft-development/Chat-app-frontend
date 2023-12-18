@@ -8,8 +8,7 @@ import axios from 'axios';
 import ChatLoading from './ChatLoading';
 import UserListItem from '../UserAvatar/UserListItem';
 import { toast } from 'react-toastify';
-// import GetUserModel from './GetUserModel';
-
+import "../../assets/css/miscelleniues/Sidebar.css"
 const Sidebar = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -121,18 +120,18 @@ const Sidebar = () => {
   }
   return (
     <div>
-      <Box display={"flex"} justifyContent="space-between" alignItems="center" bg="rgb(237 237 237)" w="100%" p="5px 10px 5px 10px" borderWidth="1px">
+      <Box className='sidebar_container'>
         <Tooltip label="Search Users to chat"
           hasArrow placement='bottom-end'
         >
           <Button className='btn' variant="ghost" onClick={onOpen}>
             <i className="fas fa-search" />
-            <Text className='fontS' display={{ base: "none", md: "flex" }} px="4" fontSize="20px" fontWeight={"600"} >
+            <Text className='fontS sidebar_taxt_first' display={{ base: "none", md: "flex" }}  >
               Search User
             </Text>
           </Button>
         </Tooltip>
-        <Text className='fontS' fontSize="20px" fontWeight={"600"}  >
+        <Text className='fontS sidebar_taxt_sec' >
           ChatApp
         </Text>
         <div >
@@ -180,9 +179,9 @@ const Sidebar = () => {
           <DrawerOverlay />
           <DrawerContent borderWidth={'1px'}>
             <TabList>
-              <div className='fontS sizeF' style={{ display: "flex", justifyContent: 'space-between' }}>
-                <Tab><div><DrawerHeader className='sizeF' fontWeight={"600"} >Search User</DrawerHeader></div></Tab>
-                <Tab> <div><DrawerHeader className='sizeF' fontWeight={"600"} cursor={'pointer'}>All Users</DrawerHeader> </div></Tab>
+              <div className='fontS sizeF sidebar_div_first'>
+                <Tab><div><DrawerHeader className='sizeF'>Search User</DrawerHeader></div></Tab>
+                <Tab> <div><DrawerHeader className='sizeF' cursor={'pointer'}>All Users</DrawerHeader> </div></Tab>
               </div>
             </TabList>
             <TabPanels className='fontS sizeF'>
@@ -211,11 +210,11 @@ const Sidebar = () => {
               </DrawerBody>
               </TabPanel>
               <TabPanel height={'555px'} overflow={'scroll'}>
-                <div style={{ display: "flex", flexDirection: "column", gap: "10px", cursor: "pointer" }} >
+                <div className='sidebar_div_sec'>
                   {getUser && getUser.data.map((value) => {
                     return (
 
-                      <div className="Mhover" style={{ display: "flex", borderBottom: '1px solid #ede5e5', gap: "10px", borderRadius: "5px", fontWeight: 'normal', padding: "10px", overflow: "scroll", paddingBottom: "0%" }} onClick={() => accessChat(value._id)} >
+                      <div className="Mhover sidebar_div_third" onClick={() => accessChat(value._id)} >
                         <div >
                           <Avatar size={'md'} cursor={'pointer'} src={value.pic.url} />
 

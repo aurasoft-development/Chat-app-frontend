@@ -16,6 +16,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { useNavigate } from "react-router-dom";
 import Picker from '@emoji-mart/react'
 import { toast } from 'react-toastify';
+import '../assets/css/SingleChat.css'
 const ENDPOINT = "http://127.0.0.1:5000";
 var socket, selectedChatCompare;
 
@@ -83,7 +84,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   useEffect(() => {
     // getVideo()
     socket.on('receive_notification', (data) => {
-      console.log("receiverd data --->", data)
       setVideo(data)
       navigation('/call/model')
     })
@@ -211,15 +211,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       {selectedChat ? (
         <>
           <Text
-            className='fontS sizeF'
+            className='fontS sizeF singlechat_text'
             fontSize={{ base: "25px", md: "20px" }}
-            pb={3}
-            px={2}
-            w='100%'
-            fontWeight={"600"}
-            display={'flex'}
-            justifyContent={{ base: "space-between" }}
-            alignItems={'center'}
           >
             <IconButton display={{ base: "flex", md: 'none' }}
               icon={<ArrowBackIcon />}
@@ -227,7 +220,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             />
             {messages &&
               (!selectedChat.isGroupChat ? (
-                <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                <div className='single_div_first'>
                   <div>
                     <ProfileModel
                       user={getSenderFull(user, selectedChat.users)}
@@ -246,34 +239,16 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                   />
                 </>
               ))}
-            <div style={{ display: "flex", gap: "10px" }}>
-              <div style={{
-                color: "green",
-                cursor: "pointer",
-                background: "#EDF2F7",
-                width: "40px",
-                paddingTop: "8px",
-                borderRadius: "6px",
-                height: "40px",
-                display: "flex",
-                justifyContent: "center"
-              }}> <CallIcon onClick={() => {
-                sendAudio();
-                history(`/audio/call/${user._id}`);
-              }}
+            <div className='single-chat-div-sec'>
+              <div
+                className='single-chat-div-inner'> <CallIcon onClick={() => {
+                  sendAudio();
+                  history(`/audio/call/${user._id}`);
+                }}
                 /> </div>
 
-              <div style={{
-                color: "green",
-                cursor: "pointer",
-                background: "#EDF2F7",
-                width: "40px",
-                paddingTop: "8px",
-                borderRadius: "6px",
-                height: "40px",
-                display: "flex",
-                justifyContent: "center"
-              }}>
+              <div
+                className='single-chat-div-inner'>
                 <VideoCallIcon
                   onClick={() => {
                     sendAudio();
@@ -286,17 +261,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           </Text>
 
           <Box
-            display="flex"
-            flexDir="column"
-            justifyContent="flex-end"
-            p={10}
-            bg="white"
-            w="100%"
-            h="100%"
-            borderWidth={"1px"}
-            borderRadius="lg"
-            overflowY="hidden"
-          >
+            className='single-chat-box'>
             {loading ? (
               <Spinner
                 size="xl"
@@ -319,7 +284,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               onClick={sendMessage}
             >
               {isTyping ? (
-                <div style={{ marginBottom: "15px", marginLeft: 0, color: "green" }}>
+                <div className='single-chat-div-third'>
                   Typing...
                 </div>
               ) : (
@@ -329,7 +294,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <InputLeftElement >
                   <Button>  <div className="button" onClick={() => setShowEmojis(!showEmojis)}> <MoodIcon /> </div> </Button>
                 </InputLeftElement>
-                {/* <div className='divInput'> */}
                 <Input
                   variant="filled"
                   bg="#E0E0E0"
@@ -355,7 +319,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
 
                 </div>
-                {/* </div> */}
               </InputGroup>
             </FormControl>
 
@@ -363,7 +326,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         </>
       ) : (
         // to get socket.io on same page
-        <Box className='fontS sizeF' display="flex" alignItems="center" justifyContent="center" h="100%">
+        <Box className='fontS sizeF single-chat-box1'>
           <Text pb={3} fontSize="20px" fontWeight={"600"}>
             Click on a user to start chatting
           </Text>

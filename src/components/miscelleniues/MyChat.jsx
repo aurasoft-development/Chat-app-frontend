@@ -75,7 +75,6 @@ const MyChat = () => {
           My Chats
           <GroupChatModel>
             <Button
-              display={"flex"}
               fontSize={{ base: "20px", md: "10px", lg: "15px" }}
               rightIcon={<AddIcon />}
               background={"none"}
@@ -84,14 +83,7 @@ const MyChat = () => {
         </Box>
 
         <Box
-          display='flex'
-          flexDir="column"
-          p={3}
-          w="100%"
-          h="100%"
-          borderRadius="lg"
-          overflowY="hidden"
-          borderWidth="1px"
+          className='mychat_box_third'
         >
           {chats ? (
             <Stack overflowY='scroll'>
@@ -103,19 +95,14 @@ const MyChat = () => {
                       setNewMessage("");
                     }
                     }
-                    cursor="pointer"
+                    className='mychat_stack_first'
                     bg={selectedChat === chat ? "#258c60" : "white"}
                     color={selectedChat === chat ? "white" : ""}
-                    px={3}
-                    py={2}
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    textAlign={"left"}
                     key={chat._id}
                   >
                     <Text className='fontS sizeF' fontWeight={"600"} >
                       <div className='innerDiv' >
-                        <div style={{ display: "flex", gap: "20px" }}>
+                        <div className='mychat_div_first'>
                           <div>
                             <Avatar size={'md'} cursor={'pointer'} src={
                               !chat.isGroupChat
@@ -131,7 +118,7 @@ const MyChat = () => {
                             </div>
                             <div>
                               {chat.latestMessage && (
-                                <Text fontSize="12px" fontWeight={"600"}>
+                                <Text className='mychat_text'>
                                   {/* <b>{chat.latestMessage.sender.name} : </b> */}
                                   {chat.latestMessage.content.length > 50
                                     ? chat.latestMessage.content.substring(0, 51) + "..."
@@ -142,15 +129,15 @@ const MyChat = () => {
                           </div>
 
                         </div>
-                        <div style={{ display: "flex", flexDirection: "column" }}>
-                          <div style={{ fontWeight: "400", fontSize: "12px" }}>
+                        <div className='mychat_div_sec'>
+                          <div className='mychat_div_third'>
                             {chat.latestMessage && (
                               <Text>
                                 {chat.latestMessage.time}
                               </Text>
                             )}
                           </div>
-                          <div style={{ display: "flex", justifyContent: "center", background: "#10e55b", borderRadius: "50%", color: "white" }}>
+                          <div className='mychat_div_four'>
                             {
                               noti.data.map((value) => {
                                 return (

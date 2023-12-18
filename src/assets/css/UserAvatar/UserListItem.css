@@ -1,0 +1,15 @@
+.userlistItem_container {
+    display: flex;
+    border-bottom: 1px solid #ede5e5;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    width: 100%;
+
+}
+
+.userlistItem_container :hover {
+    background: #38B2AC;
+    color: white,
+}

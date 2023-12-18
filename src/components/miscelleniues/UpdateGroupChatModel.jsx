@@ -21,6 +21,7 @@ import { ChatState } from "../Context/ChatProvider";
 import UserBadgeItem from "../UserAvatar/UserBadgeItem";
 import UserListItem from "../UserAvatar/UserListItem";
 import { toast } from "react-toastify";
+import '../../assets/css/miscelleniues/UpdateGroupChatModel.css'
 
 const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -162,16 +163,14 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         <ModalOverlay />
         <ModalContent className="fontS">
           <ModalHeader
-            fontSize="35px"
-            d="flex"
-            justifyContent="center"
+            className="updateGroup_header"
           >
             {selectedChat.chatName}
           </ModalHeader>
 
           <ModalCloseButton />
-          <ModalBody d="flex" flexDir="column" alignItems="center">
-            <Box w="100%" d="flex" flexWrap="wrap" pb={3}>
+          <ModalBody className="updateGroup_body">
+            <Box className="updateGroup_box">
               {selectedChat.users.map((u) => (
                 <UserBadgeItem
                   key={u._id}
