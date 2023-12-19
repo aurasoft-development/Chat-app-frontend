@@ -57,16 +57,17 @@ function Signup() {
                 password: password,
                 pic: picData
             }
-            const { data } = await commonApiRequest('post', '/api/user/register', info);
+            await commonApiRequest('post', '/api/user/register', info);
             swal({
                 title: "Registration Successful",
                 icon: "success",
                 button: "OK"
             })
 
-            localStorage.setItem("userInfo", JSON.stringify(data));
+            // localStorage.setItem("userInfo", JSON.stringify(data));
             setLoading(false);
-            navigate('/chat', { replace: true });
+            window.location.reload()
+            navigate('/', { replace: true });
         } catch (error) {
             toast.error("Error Occured")
             setPicLoading(false)

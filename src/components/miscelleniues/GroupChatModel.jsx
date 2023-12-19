@@ -1,11 +1,11 @@
 import { Box, Button, FormControl, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { ChatState } from '../Context/ChatProvider'
-import axios from 'axios'
 import UserListItem from '../UserAvatar/UserListItem'
 import UserBadgeItem from '../UserAvatar/UserBadgeItem'
 import { toast } from 'react-toastify'
 import '../../assets/css/miscelleniues/GroupChatModel.css'
+import commonApiRequest from '../../api/commonApi'
 
 const GroupChatModel = ({ children }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -28,7 +28,7 @@ const GroupChatModel = ({ children }) => {
                     Authorization: `Bearer ${user.token}`,
                 }
             }
-            const { data } = await axios.get(`/api/user/getalluser?search=${search}`, config)
+            const { data } = await commonApiRequest('get', `/api/user/getalluser?search=${search}`, config)
             setLoading(false)
             setSearchResult(data)
         } catch (error) {
@@ -41,17 +41,13 @@ const GroupChatModel = ({ children }) => {
             return;
         }
         try {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${user.token}`,
-                }
+            const headers = {
+                Authorization: `Bearer ${user.token}`,
             }
-            const { data } = await axios.post('/api/chat/group', {
+            const { data } = await commonApiRequest('post', '/api/chat/group', {
                 name: groupChatName,
                 users: JSON.stringify(selectedUsers.map((u) => u._id))
-            },
-                config
-            )
+            }, headers)
             setChats([data, ...chats])
             onClose()
             toast.success("New Group Chat Created!")

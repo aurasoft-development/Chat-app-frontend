@@ -3,13 +3,13 @@ import { ChatState } from '../Context/ChatProvider';
 import { Avatar } from '@chakra-ui/react';
 import { Box, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
-import axios from 'axios';
 import { AddIcon } from '@chakra-ui/icons';
 import ChatLoading from './ChatLoading';
-import { getSender, getSenderId, getSenderPic } from '../../config/ChatLogic';
+import { generateHeaders, getSender, getSenderId, getSenderPic } from '../../config/ChatLogic';
 import GroupChatModel from './GroupChatModel';
 import { toast } from 'react-toastify';
 import '../../assets/css/miscelleniues/MyChat.css'
+import commonApiRequest from '../../api/commonApi';
 
 const MyChat = () => {
   const [loggedUser, setLoggedUser] = useState();
@@ -22,13 +22,8 @@ const MyChat = () => {
 
   const fetchChats = async () => {
     try {
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${user.token}`
-        },
-      }
-      const { data } = await axios.get("/api/chat", config);
+      const headers = generateHeaders(`${user.token}`)
+      const { data } = await commonApiRequest('get', 'api/chat', {}, headers)
       setChats(data)
 
     } catch (error) {
@@ -37,18 +32,10 @@ const MyChat = () => {
   }
 
   const deleteNotifacation = async (_id) => {
-    // window.location.reload()
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-      const data = await axios.delete(
-        `/api/notification/delete_notification/${_id}`,
-        config
-      );
+      const headers = generateHeaders(`${userInfo.token}`)
+      const data = await commonApiRequest('delete', `/api/notification/delete_notification/${_id}`, {}, headers)
       setData(data)
 
     } catch (error) {
