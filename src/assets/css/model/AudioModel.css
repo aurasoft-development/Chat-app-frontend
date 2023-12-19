@@ -45,7 +45,7 @@
 } */
 
 .css-pv22qu {
-    background: rgb(237, 237, 237) !important;
+    background: var(--background_white) !important;
 }
 
 #vavatar {

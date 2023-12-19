@@ -21,7 +21,7 @@
 .single-chat-div-inner {
     color: green;
     cursor: pointer;
-    background: #EDF2F7;
+    background: var(--background_white);
     width: 40px;
     padding-top: 8px;
     border-radius: 6px;

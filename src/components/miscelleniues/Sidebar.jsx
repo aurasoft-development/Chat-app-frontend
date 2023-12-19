@@ -4,11 +4,12 @@ import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons"
 import { ChatState } from '../Context/ChatProvider';
 import ProfileModel from './ProfileModel';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import ChatLoading from './ChatLoading';
 import UserListItem from '../UserAvatar/UserListItem';
 import { toast } from 'react-toastify';
 import "../../assets/css/miscelleniues/Sidebar.css"
+import commonApiRequest from '../../api/commonApi';
+import { generateHeaders } from '../../config/ChatLogic';
 const Sidebar = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -23,15 +24,8 @@ const Sidebar = () => {
   const fetchNotifacation = async () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-      const { data } = await axios.get(
-        `/api/notification/get_notification`,
-        config
-      );
+      const headers = generateHeaders(`${userInfo.token}`)
+      const { data } = await commonApiRequest('get', `/api/notification/get_notification`, {}, headers)
       setNoti(data);
     } catch (error) {
       toast.error("Error Occured!")
@@ -40,13 +34,8 @@ const Sidebar = () => {
   const allUser = async () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-
-      }
-      const userData = await axios.get(`/api/user/getuser/user`, config)
+      const headers = generateHeaders(`${userInfo.token}`)
+      const userData = await commonApiRequest('get', `/api/user/getuser/user`, {}, headers)
       seGetUser(userData.data)
     } catch (error) {
       toast.error("Error Occured!")
@@ -61,15 +50,8 @@ const Sidebar = () => {
   const deleteNotifacation = async (_id) => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-      const data = await axios.delete(
-        `/api/notification/delete_notification/${_id}`,
-        config
-      );
+      const headers = generateHeaders(`${userInfo.token}`)
+      const data = await commonApiRequest('delete', `/api/notification/delete_notification/${_id}`, {}, headers)
       setData(data)
     } catch (error) {
       toast.error("Error Occured!")
@@ -87,12 +69,8 @@ const Sidebar = () => {
     }
     try {
       setLoading(true)
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token} `,
-        },
-      };
-      const { data } = await axios.get(`/api/user/getalluser?search=${value}`, config)
+      const headers = generateHeaders(`${user.token}`)
+      const { data } = await commonApiRequest('get', `/api/user/getalluser?search=${value}`, {}, headers)
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
@@ -102,13 +80,8 @@ const Sidebar = () => {
   const accessChat = async (userId) => {
     try {
       setLoadingChat(true)
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${user.token}`
-        },
-      }
-      const { data } = await axios.post("/api/chat", { userId }, config);
+      const headers = generateHeaders(`${user.token}`)
+      const { data } = await commonApiRequest('post', "/api/chat", { userId }, headers)
       if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats])
       setSelectedChat(data)
       setLoadingChat(false);

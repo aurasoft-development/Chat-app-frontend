@@ -3,13 +3,20 @@
   --color_white: white;
   --background_white: white;
   --header_background_color: rgb(237, 237, 237);
+  --all-border-color: rgb(231, 223, 223);
 }
+
+/*To change the color of all borders, uncomment it and you can change the color.*/
+
+/* *, *::before, ::after {
+  border-color: var(--all-border-color) !important;
+} */
 
 .App {
   text-align: center;
   min-height: 100vh;
   display: flex;
-  background-color: rgb(237 237 237);
+  background-color: var(--background_white);
   background-size: cover;
   background-position: center;
   color: black;
@@ -70,11 +77,6 @@
 
 .chakra-menu__menu-list {
   padding: 0% !important;
-}
-
-:root {
-  --fontF: "sans-serif"
-
 }
 
 .innerDiv {

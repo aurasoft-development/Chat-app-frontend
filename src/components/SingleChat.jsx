@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { ChatState } from './Context/ChatProvider'
 import { Box, Button, FormControl, IconButton, Input, InputGroup, InputLeftElement, InputRightElement, Spinner, Text } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import { getSender, getSenderFull } from '../config/ChatLogic';
+import { generateHeaders, getSender, getSenderFull } from '../config/ChatLogic';
 import ProfileModel from './miscelleniues/ProfileModel';
 import UpdateGroupChatModel from './miscelleniues/UpdateGroupChatModel';
 import VideoCallIcon from '@mui/icons-material/VideoCall';
 import CallIcon from '@mui/icons-material/Call';
 import io from "socket.io-client";
-import axios from 'axios';
 import ScrollableChat from './ScrollableChat';
 import MoodIcon from '@mui/icons-material/Mood';
 import data from '@emoji-mart/data'
@@ -17,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import Picker from '@emoji-mart/react'
 import { toast } from 'react-toastify';
 import '../assets/css/SingleChat.css'
+import commonApiRequest from '../api/commonApi';
 const ENDPOINT = "http://127.0.0.1:5000";
 var socket, selectedChatCompare;
 
@@ -56,13 +56,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-
       setLoading(true);
-
-      const { data } = await axios.get(
-        `/api/message/${selectedChat._id}`,
-        config
-      );
+      const { data } = await commonApiRequest('get', `/api/message/${selectedChat._id}`, config);
       setMessages(data);
       setLoading(false);
 
@@ -99,16 +94,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const postNotification = async (newMessageReceived) => {
     try {
-      const config = {
-
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-
-      };
-      const data = await axios.post(
-        "/api/notification/send_notification",
+      const headers = generateHeaders(`${user.token}`)
+      const { data } = await commonApiRequest('post', '/api/notification/send_notification',
         {
           chat: newMessageReceived.chat._id,
           sender_id: newMessageReceived.sender._id,
@@ -116,7 +103,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           names: newMessageReceived.sender.name,
           messageData: newMessageReceived.content
         },
-        config
+        headers
       );
       setNotification(data);
     } catch (error) {
@@ -151,21 +138,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     if (event.key === "Enter" ? event.key === "Enter" : event === "submit" && newMessage) {
       socket.emit("stop typing", selectedChat._id);
       try {
-        const config = {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${user.token}`,
-          },
-        };
+        const headers = generateHeaders(`${user.token}`)
         setNewMessage("");
-        const { data } = await axios.post(
-          "/api/message",
-          {
-            content: newMessage,
-            chatId: selectedChat,
-          },
-          config
-        );
+        const { data } = await commonApiRequest('post', '/api/message', {
+          content: newMessage,
+          chatId: selectedChat,
+        }, headers);
         socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {

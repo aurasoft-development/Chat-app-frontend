@@ -43,6 +43,6 @@
     border-radius: 5px;
     font-weight: normal;
     padding: 10px;
-    overflow: scroll;
-    padding-bottom: 0%;
+    /* overflow: scroll;
+    padding-bottom: 0%; */
 }

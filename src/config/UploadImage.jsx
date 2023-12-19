@@ -1,4 +1,4 @@
-import axios from "axios";
+import commonApiRequest from "../api/commonApi";
 
 // Function to upload captured images
 export const uploadImages = async (captureImage) => {
@@ -7,7 +7,7 @@ export const uploadImages = async (captureImage) => {
         const formData = new FormData();
         formData.append('files', captureImage);
 
-        const response = await axios.post(apiUrl, formData)
+        const response = await commonApiRequest('post', apiUrl, formData)
         return response;
     } catch (error) {
         // Throwing the error for further handling
