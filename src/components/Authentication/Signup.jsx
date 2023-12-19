@@ -1,11 +1,11 @@
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import axios from 'axios'
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from '@chakra-ui/react'
 import { uploadImages } from '../../config/UploadImage';
 import { toast } from 'react-toastify';
+import commonApiRequest from '../../api/commonApi';
 function Signup() {
     const [show, setShow] = useState()
     const [name, setName] = useState();
@@ -57,8 +57,7 @@ function Signup() {
                 password: password,
                 pic: picData
             }
-            const { data } = await axios.post('/api/user/register', info
-            );
+            const { data } = await commonApiRequest('post', '/api/user/register', info);
             swal({
                 title: "Registration Successful",
                 icon: "success",

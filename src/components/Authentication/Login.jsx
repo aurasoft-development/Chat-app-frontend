@@ -3,10 +3,10 @@ import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { VStack } from "@chakra-ui/layout";
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
 import { toast } from 'react-toastify'
+import commonApiRequest from "../../api/commonApi";
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -31,12 +31,8 @@ const Login = () => {
           "Content-type": "application/json",
         },
       };
-
-      const { data } = await axios.post(
-        "/api/user/login",
-        { email, password },
-        config
-      );
+     
+      const { data } =   await commonApiRequest('post', '/api/user/login', { email, password },config);
       swal({
         title: "Login Successful",
         icon: "success",

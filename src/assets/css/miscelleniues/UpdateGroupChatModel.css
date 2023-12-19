@@ -1,7 +1,11 @@
 .updateGroup_header {
     display: flex;
     justify-content: center;
-    font-size: 35px;
+    display: flex;
+    justify-content: center;
+    background-color: var(--model_header_footer_background);
+    color: var(--color_white);
+    padding: 20px !important;
 }
 
 .updateGroup_body {
@@ -10,9 +14,14 @@
     align-items: center;
 }
 
+.update-group {
+    background-color: var(--model_header_footer_background);
+}
+
 .updateGroup_box {
     display: flex;
     flex-wrap: wrap;
+    color: var(--color_white);
     width: 100%;
     padding-bottom: 12px;
 }

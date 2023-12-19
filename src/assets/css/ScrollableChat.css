@@ -9,7 +9,7 @@
 .scrollablechat_div {
     display: flex;
     gap: 5px;
-    align-items: end;
+    align-items: flex-end;
 }
 
 .sc_div {

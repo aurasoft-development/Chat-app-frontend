@@ -1,16 +1,13 @@
 // Importing React and axios for making API requests
-import React from "react";
 import axios from "axios";
 
 
 // Creating an axios instance with the API base URL
-{ console.log("env-url----------->", process.env.REACT_APP_URL) }
 const api = axios.create({
   baseURL: `${process.env.REACT_APP_URL}`
 })
 // Common function to make api request
 const commonApiRequest = async (method, url, data = null, headers = {}) => {
-
   try {
 
     // Adding headers to the request using interceptors
